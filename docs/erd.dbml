@@ -1,0 +1,112 @@
+Table users {
+  id            int [pk, increment]
+  email         varchar(255) [unique, not null]
+  password_hash varchar(255) [not null]
+  display_name  varchar(100) [not null]
+  avatar_url    varchar(500)
+  created_at    timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at    timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table households {
+  id          int [pk, increment]
+  name        varchar(150) [not null]
+  invite_code char(8) [unique, not null]
+  created_by  int [not null, ref: > users.id]
+  created_at  timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at  timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table household_members {
+  id                int [pk, increment]
+  household_id      int [not null, ref: > households.id]
+  user_id           int [not null, ref: > users.id]
+  role_in_household enum('parent','child','admin') [not null, default: 'child']
+  joined_at         timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table chores {
+  id              int [pk, increment]
+  household_id    int [not null, ref: > households.id]
+  title           varchar(150) [not null]
+  description     text
+  points          int [not null, default: 10]
+  category        varchar(50)
+  recurrence      enum('none','daily','weekly','custom') [not null, default: 'none']
+  recurrence_days varchar(20)
+  created_by      int [not null, ref: > users.id]
+  is_active       tinyint(1) [not null, default: 1]
+  created_at      timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at      timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table chore_assignments {
+  id          int [pk, increment]
+  chore_id    int [not null, ref: > chores.id]
+  assigned_to int [not null, ref: > users.id]
+  assigned_by int [not null, ref: > users.id]
+  due_date    date [not null]
+  status      enum('pending','in_progress','submitted','approved','rejected','overdue') [not null, default: 'pending']
+  created_at  timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at  timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table chore_completions {
+  id             int [pk, increment]
+  assignment_id  int [not null, ref: > chore_assignments.id]
+  submitted_by   int [not null, ref: > users.id]
+  evidence_url   varchar(500)
+  note           text
+  status         enum('pending','approved','rejected') [not null, default: 'pending']
+  reviewed_by    int [ref: > users.id]
+  rejection_note text
+  submitted_at   timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  reviewed_at    timestamp
+}
+
+Table rewards {
+  id           int [pk, increment]
+  household_id int [not null, ref: > households.id]
+  title        varchar(150) [not null]
+  description  text
+  cost_points  int [not null]
+  created_by   int [not null, ref: > users.id]
+  is_active    tinyint(1) [not null, default: 1]
+  created_at   timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at   timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table reward_redemptions {
+  id             int [pk, increment]
+  reward_id      int [not null, ref: > rewards.id]
+  redeemed_by    int [not null, ref: > users.id]
+  points_spent   int [not null]
+  status         enum('pending','approved','rejected','fulfilled') [not null, default: 'pending']
+  reviewed_by    int [ref: > users.id]
+  rejection_note text
+  requested_at   timestamp [not null, default: `CURRENT_TIMESTAMP`]
+  resolved_at    timestamp
+}
+
+Table points_transactions {
+  id             int [pk, increment]
+  user_id        int [not null, ref: > users.id]
+  household_id   int [not null, ref: > households.id]
+  delta          int [not null]
+  reason         enum('chore_reward','reward_redemption','manual_adjustment','bonus') [not null]
+  reference_type enum('chore_completion','reward_redemption','manual') [not null]
+  reference_id   int
+  note           varchar(255)
+  created_at     timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
+
+Table notifications {
+  id           int [pk, increment]
+  user_id      int [not null, ref: > users.id]
+  household_id int [not null, ref: > households.id]
+  type         enum('chore_assigned','completion_submitted','completion_approved','completion_rejected','reward_requested','reward_approved','reward_rejected','points_awarded') [not null]
+  message      varchar(500) [not null]
+  link_url     varchar(500)
+  is_read      tinyint(1) [not null, default: 0]
+  created_at   timestamp [not null, default: `CURRENT_TIMESTAMP`]
+}
