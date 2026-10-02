@@ -40,6 +40,7 @@ use Maple\Controllers\AuthController;
 use Maple\Controllers\HouseholdController;
 use Maple\Controllers\ChoreController;
 use Maple\Controllers\AssignmentController;
+use Maple\Controllers\CompletionController;
 
 $router = new Router();
 
@@ -68,5 +69,10 @@ $router->delete('/api/v1/chores/{id}',            [ChoreController::class, 'dest
 // Assignments
 $router->post('/api/v1/chores/{id}/assign', [AssignmentController::class, 'assign']);
 $router->get ('/api/v1/assignments',        [AssignmentController::class, 'index']);
+
+// Completions
+$router->post('/api/v1/assignments/{id}/complete', [CompletionController::class, 'submit']);
+$router->put ('/api/v1/completions/{id}/approve',  [CompletionController::class, 'approve']);
+$router->put ('/api/v1/completions/{id}/reject',   [CompletionController::class, 'reject']);
 
 $router->dispatch();
