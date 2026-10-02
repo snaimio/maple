@@ -43,6 +43,8 @@ use Maple\Controllers\AssignmentController;
 use Maple\Controllers\CompletionController;
 use Maple\Controllers\RewardController;
 use Maple\Controllers\RedemptionController;
+use Maple\Controllers\LeaderboardController;
+use Maple\Controllers\AnalyticsController;
 
 $router = new Router();
 
@@ -86,5 +88,11 @@ $router->delete('/api/v1/rewards/{id}',            [RewardController::class, 'de
 $router->post('/api/v1/rewards/{id}/redeem',      [RedemptionController::class, 'redeem']);
 $router->put ('/api/v1/redemptions/{id}/approve', [RedemptionController::class, 'approve']);
 $router->put ('/api/v1/redemptions/{id}/reject',  [RedemptionController::class, 'reject']);
+
+// Leaderboard & Analytics
+$router->get('/api/v1/households/{id}/leaderboard',       [LeaderboardController::class, 'show']);
+$router->get('/api/v1/households/{id}/analytics/weekly',  [AnalyticsController::class, 'weekly']);
+$router->get('/api/v1/households/{id}/analytics/chores',  [AnalyticsController::class, 'chores']);
+$router->get('/api/v1/households/{id}/analytics/members', [AnalyticsController::class, 'members']);
 
 $router->dispatch();
