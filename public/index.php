@@ -39,6 +39,7 @@ use Maple\Core\Response;
 use Maple\Controllers\AuthController;
 use Maple\Controllers\HouseholdController;
 use Maple\Controllers\ChoreController;
+use Maple\Controllers\AssignmentController;
 
 $router = new Router();
 
@@ -63,5 +64,9 @@ $router->get   ('/api/v1/households/{id}/chores', [ChoreController::class, 'inde
 $router->post  ('/api/v1/households/{id}/chores', [ChoreController::class, 'store']);
 $router->put   ('/api/v1/chores/{id}',            [ChoreController::class, 'update']);
 $router->delete('/api/v1/chores/{id}',            [ChoreController::class, 'destroy']);
+
+// Assignments
+$router->post('/api/v1/chores/{id}/assign', [AssignmentController::class, 'assign']);
+$router->get ('/api/v1/assignments',        [AssignmentController::class, 'index']);
 
 $router->dispatch();
