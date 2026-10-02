@@ -1,0 +1,10 @@
+/vendor
+.env
+/uploads/*
+!/uploads/.gitkeep
+/logs/*.log
+!/logs/.gitkeep
+.DS_Store
+*.log
+node_modules/
+dist/
