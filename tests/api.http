@@ -1,0 +1,203 @@
+###############################################################################
+# Maple API — Test File
+#
+# Usage:
+#   1. Make sure the PHP server is running:
+#        php -S localhost:8000 -t public
+#   2. Make sure XAMPP MySQL is running.
+#   3. Click "Send Request" above any request below.
+#   4. Requests that need auth rely on cookies remembered from a prior Login.
+#
+# Demo credentials:
+#   alex@maple.test  / password123  (parent)
+#   jamie@maple.test / password123  (child, 45 pts)
+#   riley@maple.test / password123  (child, 20 pts)
+###############################################################################
+
+
+### ─── Health ────────────────────────────────────────────────────────────────
+
+### Ping
+GET http://localhost:8000/api/v1/ping
+
+
+### ─── Auth ──────────────────────────────────────────────────────────────────
+
+### Register (new user)
+POST http://localhost:8000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "apitest@maple.local",
+  "password": "password123",
+  "display_name": "API Tester"
+}
+
+### Login as Alex (parent)
+POST http://localhost:8000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "alex@maple.test",
+  "password": "password123"
+}
+
+### Me — current user (requires Login)
+GET http://localhost:8000/api/v1/auth/me
+
+### Logout
+POST http://localhost:8000/api/v1/auth/logout
+
+
+### ─── Households ────────────────────────────────────────────────────────────
+
+### Create a household
+POST http://localhost:8000/api/v1/households
+Content-Type: application/json
+
+{
+  "name": "Test Household"
+}
+
+### Join a household via invite code
+POST http://localhost:8000/api/v1/households/join
+Content-Type: application/json
+
+{
+  "invite_code": "REPLACE_WITH_CODE"
+}
+
+### List members of household 1
+GET http://localhost:8000/api/v1/households/1/members
+
+
+### ─── Chores ────────────────────────────────────────────────────────────────
+
+### List chores for household 1
+GET http://localhost:8000/api/v1/households/1/chores
+
+### Create a chore (parent only)
+POST http://localhost:8000/api/v1/households/1/chores
+Content-Type: application/json
+
+{
+  "title": "Test chore",
+  "description": "Created from REST Client",
+  "points": 20,
+  "category": "Test"
+}
+
+### Update a chore (parent only)
+PUT http://localhost:8000/api/v1/chores/1
+Content-Type: application/json
+
+{
+  "points": 30
+}
+
+### Delete a chore (soft delete, parent only)
+DELETE http://localhost:8000/api/v1/chores/6
+
+
+### ─── Assignments ───────────────────────────────────────────────────────────
+
+### Assign a chore to Jamie and Riley
+POST http://localhost:8000/api/v1/chores/1/assign
+Content-Type: application/json
+
+{
+  "user_ids": [2, 3],
+  "due_date": "2026-10-15"
+}
+
+### List all assignments
+GET http://localhost:8000/api/v1/assignments
+
+### List Jamie's assignments
+GET http://localhost:8000/api/v1/assignments?user_id=2
+
+### List only pending assignments
+GET http://localhost:8000/api/v1/assignments?status=pending
+
+
+### ─── Completions ───────────────────────────────────────────────────────────
+
+### Jamie submits a completion (login as Jamie first)
+POST http://localhost:8000/api/v1/assignments/1/complete
+Content-Type: application/json
+
+{
+  "note": "All done!"
+}
+
+### Parent approves a completion
+PUT http://localhost:8000/api/v1/completions/1/approve
+
+### Parent rejects a completion
+PUT http://localhost:8000/api/v1/completions/2/reject
+Content-Type: application/json
+
+{
+  "rejection_note": "Please redo this"
+}
+
+
+### ─── Rewards ───────────────────────────────────────────────────────────────
+
+### List rewards for household 1
+GET http://localhost:8000/api/v1/households/1/rewards
+
+### Create a reward (parent only)
+POST http://localhost:8000/api/v1/households/1/rewards
+Content-Type: application/json
+
+{
+  "title": "Extra bedtime story",
+  "cost_points": 25
+}
+
+### Update a reward
+PUT http://localhost:8000/api/v1/rewards/1
+Content-Type: application/json
+
+{
+  "cost_points": 60
+}
+
+### Delete a reward (soft delete)
+DELETE http://localhost:8000/api/v1/rewards/6
+
+
+### ─── Redemptions ───────────────────────────────────────────────────────────
+
+### Child redeems a reward (login as Jamie first)
+POST http://localhost:8000/api/v1/rewards/1/redeem
+
+### Parent approves the redemption
+PUT http://localhost:8000/api/v1/redemptions/1/approve
+
+### Parent rejects the redemption
+PUT http://localhost:8000/api/v1/redemptions/1/reject
+Content-Type: application/json
+
+{
+  "rejection_note": "Not this time"
+}
+
+
+### ─── Leaderboard ───────────────────────────────────────────────────────────
+
+### Household leaderboard
+GET http://localhost:8000/api/v1/households/1/leaderboard
+
+
+### ─── Analytics ─────────────────────────────────────────────────────────────
+
+### Weekly activity
+GET http://localhost:8000/api/v1/households/1/analytics/weekly
+
+### Chore completion counts
+GET http://localhost:8000/api/v1/households/1/analytics/chores
+
+### Member stats
+GET http://localhost:8000/api/v1/households/1/analytics/members
