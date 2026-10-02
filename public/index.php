@@ -41,10 +41,11 @@ use Maple\Controllers\HouseholdController;
 use Maple\Controllers\ChoreController;
 use Maple\Controllers\AssignmentController;
 use Maple\Controllers\CompletionController;
+use Maple\Controllers\RewardController;
+use Maple\Controllers\RedemptionController;
 
 $router = new Router();
 
-// Test route — remove later
 $router->get('/api/v1/ping', function () {
     Response::json(['pong' => true, 'time' => date('c')]);
 });
@@ -74,5 +75,16 @@ $router->get ('/api/v1/assignments',        [AssignmentController::class, 'index
 $router->post('/api/v1/assignments/{id}/complete', [CompletionController::class, 'submit']);
 $router->put ('/api/v1/completions/{id}/approve',  [CompletionController::class, 'approve']);
 $router->put ('/api/v1/completions/{id}/reject',   [CompletionController::class, 'reject']);
+
+// Rewards
+$router->get   ('/api/v1/households/{id}/rewards', [RewardController::class, 'index']);
+$router->post  ('/api/v1/households/{id}/rewards', [RewardController::class, 'store']);
+$router->put   ('/api/v1/rewards/{id}',            [RewardController::class, 'update']);
+$router->delete('/api/v1/rewards/{id}',            [RewardController::class, 'destroy']);
+
+// Redemptions
+$router->post('/api/v1/rewards/{id}/redeem',      [RedemptionController::class, 'redeem']);
+$router->put ('/api/v1/redemptions/{id}/approve', [RedemptionController::class, 'approve']);
+$router->put ('/api/v1/redemptions/{id}/reject',  [RedemptionController::class, 'reject']);
 
 $router->dispatch();
