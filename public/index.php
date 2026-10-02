@@ -23,7 +23,7 @@ session_set_cookie_params([
     'samesite' => 'Lax',
 ]);
 
-// --- CORS (fallback; the Angular dev proxy makes this same-origin) ---
+// --- CORS ---
 $allowedOrigin = ($_ENV['APP_ENV'] ?? 'local') === 'local'
     ? 'http://localhost:4200'
     : 'https://your-production-domain.com';
@@ -41,12 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // --- Imports ---
 use Maple\Core\Router;
 use Maple\Core\Response;
+use Maple\Controllers\AuthController;
 
 $router = new Router();
 
-// Temporary test route (delete after step 3.2)
+// Test route — remove later
 $router->get('/api/v1/ping', function () {
     Response::json(['pong' => true, 'time' => date('c')]);
 });
+
+// Auth
+$router->post('/api/v1/auth/register', [AuthController::class, 'register']);
+$router->post('/api/v1/auth/login',    [AuthController::class, 'login']);
+$router->post('/api/v1/auth/logout',   [AuthController::class, 'logout']);
+$router->get ('/api/v1/auth/me',       [AuthController::class, 'me']);
 
 $router->dispatch();
