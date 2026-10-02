@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 use Maple\Core\Router;
 use Maple\Core\Response;
 use Maple\Controllers\AuthController;
+use Maple\Controllers\HouseholdController;
 
 $router = new Router();
 
@@ -55,5 +56,10 @@ $router->post('/api/v1/auth/register', [AuthController::class, 'register']);
 $router->post('/api/v1/auth/login',    [AuthController::class, 'login']);
 $router->post('/api/v1/auth/logout',   [AuthController::class, 'logout']);
 $router->get ('/api/v1/auth/me',       [AuthController::class, 'me']);
+
+// Households
+$router->post('/api/v1/households',              [HouseholdController::class, 'create']);
+$router->post('/api/v1/households/join',         [HouseholdController::class, 'join']);
+$router->get ('/api/v1/households/{id}/members', [HouseholdController::class, 'members']);
 
 $router->dispatch();
