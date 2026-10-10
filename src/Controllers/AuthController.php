@@ -108,6 +108,26 @@ class AuthController
             Response::error('Authentication required', 401);
         }
 
+        $hStmt = $pdo->prepare(
+            "SELECT h.id, h.name, hm.role_in_household AS role
+             FROM households h
+             JOIN household_members hm ON hm.household_id = h.id
+             WHERE hm.user_id = ?
+             ORDER BY h.id ASC
+             LIMIT 1"
+        );
+        $hStmt->execute([$userId]);
+        $hRow = $hStmt->fetch();
+
+        $household = null;
+        if ($hRow) {
+            $household = [
+                'id'   => (int) $hRow['id'],
+                'name' => $hRow['name'],
+                'role' => $hRow['role'],
+            ];
+        }
+
         Response::json([
             'user' => [
                 'id'           => (int) $user['id'],
@@ -116,6 +136,7 @@ class AuthController
                 'avatar_url'   => $user['avatar_url'],
                 'created_at'   => $user['created_at'],
             ],
+            'household' => $household,
         ]);
     }
 }

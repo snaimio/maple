@@ -28,3 +28,39 @@ Optional: { "error": "message", "field": "email" }
 - Booleans: true / false
 - IDs: integers
 - Null: explicit null
+ 
+## Endpoints
+ 
+### Auth: GET /api/v1/auth/me
+Returns the authenticated user and their primary household (if any).
+ 
+**Response (200 OK):**
+```json
+{
+  "user": {
+    "id": 1,
+    "email": "alex@maple.test",
+    "display_name": "Alex",
+    "avatar_url": null,
+    "created_at": "2026-10-01T12:00:00Z"
+  },
+  "household": {
+    "id": 1,
+    "name": "The Demo Family",
+    "role": "parent"
+  }
+}
+```
+If the user is not a member of any household, `"household"` is `null`:
+```json
+{
+  "user": {
+    "id": 1,
+    "email": "alex@maple.test",
+    "display_name": "Alex",
+    "avatar_url": null,
+    "created_at": "2026-10-01T12:00:00Z"
+  },
+  "household": null
+}
+```
