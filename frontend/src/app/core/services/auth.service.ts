@@ -1,15 +1,17 @@
 import { inject, Injectable, signal, computed, Signal } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { ApiService } from './api.service';
-import { User } from '../models';
+import { User, Household } from '../models';
 
 export interface AuthResponse {
   user: User;
+  household?: Household;
+  household_id?: number;
 }
 
 /**
  * Authentication service handling user registration, login, logout,
- * session status verification, and current user signal state.
+ * session status verification, active household selection, and current user signal state.
  */
 @Injectable({
   providedIn: 'root',
@@ -17,6 +19,17 @@ export interface AuthResponse {
 export class AuthService {
   private readonly api = inject(ApiService);
   private readonly _currentUser = signal<User | null>(null);
+
+  private loadInitialHouseholdId(): number | null {
+    try {
+      const stored = localStorage.getItem('maple_household_id');
+      return stored ? parseInt(stored, 10) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private readonly currentHouseholdIdSignal = signal<number | null>(this.loadInitialHouseholdId());
 
   /**
    * Read-only signal containing the currently authenticated user or null.
@@ -27,6 +40,36 @@ export class AuthService {
    * Computed reactive signal reflecting whether a user is currently logged in.
    */
   readonly isAuthenticated = computed(() => this._currentUser() !== null);
+
+  /**
+   * Read-only signal containing the currently active household ID or null.
+   */
+  readonly currentHouseholdId: Signal<number | null> = this.currentHouseholdIdSignal.asReadonly();
+
+  /**
+   * Sets the active household ID for the authenticated session.
+   *
+   * @param id The household ID
+   */
+  setCurrentHouseholdId(id: number): void {
+    this.currentHouseholdIdSignal.set(id);
+    try {
+      localStorage.setItem('maple_household_id', id.toString());
+    } catch {
+      // localStorage may be unavailable in some contexts
+    }
+  }
+
+  /**
+   * Extracts household identifier from authentication responses if present.
+   */
+  private extractHouseholdId(response: unknown): void {
+    const res = response as { household?: { id?: number }; household_id?: number };
+    const id = res?.household?.id ?? res?.household_id;
+    if (id !== undefined && id !== null) {
+      this.setCurrentHouseholdId(Number(id));
+    }
+  }
 
   /**
    * Registers a new user account and establishes an authenticated session.
@@ -42,7 +85,10 @@ export class AuthService {
       password,
       display_name: displayName,
     }).pipe(
-      tap((response) => this._currentUser.set(response.user))
+      tap((response) => {
+        this._currentUser.set(response.user);
+        this.extractHouseholdId(response);
+      })
     );
   }
 
@@ -58,7 +104,10 @@ export class AuthService {
       email,
       password,
     }).pipe(
-      tap((response) => this._currentUser.set(response.user))
+      tap((response) => {
+        this._currentUser.set(response.user);
+        this.extractHouseholdId(response);
+      })
     );
   }
 
@@ -69,7 +118,15 @@ export class AuthService {
    */
   logout(): Observable<void> {
     return this.api.post<void>('/auth/logout').pipe(
-      tap(() => this._currentUser.set(null))
+      tap(() => {
+        this._currentUser.set(null);
+        this.currentHouseholdIdSignal.set(null);
+        try {
+          localStorage.removeItem('maple_household_id');
+        } catch {
+          // ignore
+        }
+      })
     );
   }
 
@@ -82,7 +139,10 @@ export class AuthService {
   me(): Observable<AuthResponse> {
     return this.api.get<AuthResponse>('/auth/me').pipe(
       tap({
-        next: (response) => this._currentUser.set(response.user),
+        next: (response) => {
+          this._currentUser.set(response.user);
+          this.extractHouseholdId(response);
+        },
         error: () => this._currentUser.set(null),
       }),
       catchError((error) => {

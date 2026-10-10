@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
+import { ParentDashboardComponent } from './features/dashboard/parent-dashboard.component';
 import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-dashboard.component';
 import { CreateComponent } from './features/household/create/create.component';
 import { JoinComponent } from './features/household/join/join.component';
@@ -32,7 +33,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: PlaceholderDashboardComponent,
+    component: ParentDashboardComponent,
     canActivate: [authGuard],
   },
   {

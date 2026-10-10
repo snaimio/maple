@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HouseholdService } from '../../../core/services/household.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 /**
  * Component enabling family members to join an existing household.
@@ -249,6 +250,7 @@ import { HouseholdService } from '../../../core/services/household.service';
 })
 export class JoinComponent {
   private readonly householdService = inject(HouseholdService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   readonly inviteCode = signal('');
@@ -272,8 +274,9 @@ export class JoinComponent {
     this.error.set(null);
 
     this.householdService.join(code).subscribe({
-      next: () => {
+      next: (household) => {
         this.loading.set(false);
+        this.authService.setCurrentHouseholdId(household.id);
         this.router.navigate(['/dashboard']);
       },
       error: (err: HttpErrorResponse) => {

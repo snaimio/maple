@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HouseholdService } from '../../../core/services/household.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 /**
  * Component enabling parents to create a new household.
@@ -350,6 +351,7 @@ import { HouseholdService } from '../../../core/services/household.service';
 })
 export class CreateComponent {
   private readonly householdService = inject(HouseholdService);
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
   readonly name = signal('');
@@ -371,6 +373,7 @@ export class CreateComponent {
       next: (household) => {
         this.loading.set(false);
         this.createdInviteCode.set(household.invite_code || null);
+        this.authService.setCurrentHouseholdId(household.id);
       },
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);
