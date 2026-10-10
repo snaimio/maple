@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-dashboard.component';
+import { CreateComponent } from './features/household/create/create.component';
+import { JoinComponent } from './features/household/join/join.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -17,6 +19,16 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'households/create',
+    component: CreateComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'households/join',
+    component: JoinComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'dashboard',
