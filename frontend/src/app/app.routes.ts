@@ -23,4 +23,29 @@ export const routes: Routes = [
     component: PlaceholderDashboardComponent,
     canActivate: [authGuard],
   },
+  {
+    path: 'chores',
+    component: PlaceholderDashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'approvals',
+    component: PlaceholderDashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'rewards',
+    component: PlaceholderDashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'leaderboard',
+    component: PlaceholderDashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'analytics',
+    component: PlaceholderDashboardComponent,
+    canActivate: [authGuard],
+  },
 ];

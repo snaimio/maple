@@ -1,1 +1,92 @@
-<router-outlet />
+@if (isLoggedIn()) {
+  <header class="app-navbar">
+    <div class="nav-left">
+      <!-- Mobile Hamburger Button -->
+      <button
+        type="button"
+        class="hamburger-btn"
+        (click)="toggleMenu()"
+        aria-label="Toggle navigation menu"
+        [attr.aria-expanded]="mobileMenuOpen()"
+      >
+        <svg class="hamburger-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          @if (mobileMenuOpen()) {
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          } @else {
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          }
+        </svg>
+      </button>
+
+      <!-- Maple Logo -->
+      <a [routerLink]="'/dashboard'" class="logo-brand" (click)="closeMenu()">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18m0-18l-4 7m4-7l4 7M4 14l8-4 8 4m-14 4l6-3 6 3" />
+        </svg>
+        <span class="logo-text">Maple</span>
+      </a>
+    </div>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-center desktop-nav">
+      @for (link of navLinks; track link.path) {
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="active-link"
+          class="nav-link"
+        >
+          <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="link.icon" />
+          </svg>
+          <span>{{ link.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <!-- User Profile & Actions -->
+    <div class="nav-right">
+      <!-- Notification Bell -->
+      <button type="button" class="icon-btn" aria-label="Notifications">
+        <svg class="bell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </button>
+
+      <!-- User Avatar & Name -->
+      <div class="user-profile">
+        <div class="avatar" [title]="currentUser()?.display_name || 'User'">
+          {{ getUserInitials() }}
+        </div>
+        <span class="user-name">{{ currentUser()?.display_name }}</span>
+      </div>
+
+      <!-- Logout Button -->
+      <button type="button" class="btn-logout" (click)="logout()">
+        Logout
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Slide-Down Menu -->
+  @if (mobileMenuOpen()) {
+    <nav class="mobile-menu" [class.open]="mobileMenuOpen()" aria-label="Mobile Navigation">
+      @for (link of navLinks; track link.path) {
+        <a
+          [routerLink]="link.path"
+          routerLinkActive="active-link"
+          class="mobile-nav-link"
+          (click)="closeMenu()"
+        >
+          <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="link.icon" />
+          </svg>
+          <span>{{ link.label }}</span>
+        </a>
+      }
+    </nav>
+  }
+}
+
+<main class="app-main">
+  <router-outlet />
+</main>
