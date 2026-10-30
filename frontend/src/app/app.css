@@ -221,16 +221,21 @@
 .app-main {
   display: block;
   min-height: calc(100vh - 64px);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* Responsive Rules */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .desktop-nav {
-    display: none;
+    display: none !important;
   }
 
   .hamburger-btn {
-    display: flex;
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
   }
 
   .user-name {
@@ -240,9 +245,55 @@
   .app-navbar {
     padding: 0 16px;
   }
+
+  .icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .btn-logout {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .mobile-nav-link {
+    min-height: 44px;
+  }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 480px) {
+  .app-navbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+  }
+
+  .logo-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .btn-logout {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .nav-right {
+    gap: 8px;
+  }
+}
+
+@media (min-width: 769px) {
   .hamburger-btn {
     display: none !important;
   }

@@ -1011,36 +1011,91 @@ import { Assignment, Reward } from '../../core/models';
       .rewards-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .points-hero-card {
+        padding: 24px;
+      }
+
+      .points-number {
+        font-size: 44px;
+      }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 480px) {
       .child-dashboard-page {
-        padding: 20px 16px;
+        padding: 16px;
+      }
+
+      .greeting-title {
+        font-size: 24px;
+      }
+
+      .greeting-subtitle {
+        font-size: 13px;
       }
 
       .points-hero-card {
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
-        padding: 20px;
+        gap: 14px;
+        padding: 18px 16px;
+        border-radius: 14px;
+      }
+
+      .points-number {
+        font-size: 36px;
+      }
+
+      .streak-badge {
+        padding: 6px 12px;
+      }
+
+      .goal-card {
+        padding: 14px 16px;
+        gap: 12px;
       }
 
       .chore-item-card {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
       }
 
       .chore-action-col {
         width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
         padding-top: 10px;
         border-top: 1px solid #F3F4F6;
       }
 
+      .btn-mark-complete {
+        width: 100%;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .rewards-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .btn-redeem {
+        min-height: 44px;
+      }
+
+      .modal-card {
+        width: 95%;
+        max-width: 100%;
+      }
+
+      .btn-confirm-submit,
+      .btn-cancel {
+        min-height: 44px;
       }
     }
   `],

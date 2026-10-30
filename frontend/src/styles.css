@@ -1,7 +1,26 @@
 /* Global Application Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  max-width: 100vw;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
 button:disabled,
 button[disabled] {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
+}
+
+@media (max-width: 480px) {
+  button, .btn-primary, .btn-secondary, .btn-submit, .btn-action {
+    min-height: 44px;
+  }
 }

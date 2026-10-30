@@ -393,10 +393,69 @@ import { Chore, HouseholdMember } from '../../core/models';
       to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 768px) {
+      .form-card {
+        width: 95%;
+        max-width: 480px;
+      }
+
+      .form-row {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .form-card {
+        width: 95%;
+        max-width: 100%;
+        max-height: 92vh;
+        overflow-y: auto;
+        border-radius: 12px;
+      }
+
+      .form-header {
+        padding: 16px 18px 12px;
+      }
+
+      .form-title {
+        font-size: 18px;
+      }
+
+      .close-btn {
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+
+      .form-body {
+        padding: 16px 18px 20px;
+        gap: 14px;
+      }
+
       .form-row {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 14px;
+      }
+
+      .form-input,
+      .form-textarea,
+      .form-select {
+        min-height: 44px;
+        font-size: 16px;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+      }
+
+      .btn-save,
+      .btn-cancel {
+        width: 100%;
+        min-height: 44px;
       }
     }
   `],

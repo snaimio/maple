@@ -698,17 +698,72 @@ import { Assignment } from '../../core/models';
       cursor: not-allowed;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
+      .approvals-page {
+        padding: 24px 20px;
+      }
+
+      .page-title {
+        font-size: 26px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .approvals-page {
+        padding: 16px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
       .approval-card {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
       }
 
       .card-right {
         width: 100%;
-        justify-content: space-between;
-        padding-top: 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding-top: 10px;
         border-top: 1px solid #F3F4F6;
+      }
+
+      .points-pill {
+        align-self: flex-start;
+      }
+
+      .actions-group {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn-approve,
+      .btn-reject {
+        flex: 1;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-card {
+        width: 95%;
+        max-width: 100%;
+      }
+
+      .btn-confirm-reject,
+      .btn-cancel {
+        min-height: 44px;
       }
     }
   `],

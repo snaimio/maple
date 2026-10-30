@@ -801,29 +801,87 @@ interface DailyPointStat {
     }
 
     /* Responsive Queries */
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
+      .dashboard-page {
+        padding: 24px 20px;
+      }
+
       .main-columns {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
 
       .kpi-row {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .page-title {
+        font-size: 26px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 480px) {
       .dashboard-page {
-        padding: 20px 16px;
+        padding: 16px;
       }
 
       .dashboard-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
+        margin-bottom: 20px;
       }
 
-      .kpi-row {
-        grid-template-columns: 1fr;
+      .header-actions {
+        width: 100%;
+      }
+
+      .btn-outline {
+        width: 100%;
+        text-align: center;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
+      .kpi-card {
+        padding: 16px;
+      }
+
+      .kpi-value {
+        font-size: 22px;
+      }
+
+      .approval-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .approval-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .btn-approve,
+      .btn-reject {
+        min-height: 44px;
+        padding: 8px 14px;
       }
     }
   `]

@@ -965,31 +965,88 @@ import { Reward, Redemption } from '../../core/models';
       cursor: pointer;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
+      .reward-manager-page {
+        padding: 24px 20px;
+      }
+
       .rewards-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 480px) {
       .reward-manager-page {
-        padding: 20px 16px;
+        padding: 16px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .redemption-card {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+      }
+
+      .redemption-left {
+        width: 100%;
       }
 
       .redemption-right {
         width: 100%;
         justify-content: space-between;
+        align-items: center;
         padding-top: 10px;
         border-top: 1px solid #F3F4F6;
       }
 
+      .btn-approve,
+      .btn-reject {
+        min-height: 44px;
+        padding: 8px 14px;
+      }
+
       .rewards-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .btn-edit,
+      .btn-delete {
+        min-height: 44px;
+      }
+
+      .modal-card {
+        width: 95%;
+        max-width: 100%;
+        border-radius: 12px;
+      }
+
+      .btn-cancel,
+      .btn-confirm-reject {
+        min-height: 44px;
       }
     }
   `],

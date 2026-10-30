@@ -586,24 +586,68 @@ import { Reward, HouseholdMember, Redemption } from '../../core/models';
       cursor: not-allowed;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 768px) {
+      .reward-store-page {
+        padding: 24px 20px;
+      }
+
       .rewards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      .skeleton-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 480px) {
       .reward-store-page {
-        padding: 20px 16px;
+        padding: 16px;
       }
 
       .store-header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
+      .points-badge-pill {
+        align-self: flex-start;
       }
 
       .rewards-grid {
         grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .skeleton-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-action {
+        min-height: 44px;
+        font-size: 14px;
+      }
+
+      .modal-card {
+        width: 95%;
+        max-width: 100%;
+        border-radius: 12px;
+      }
+
+      .btn-confirm-redeem,
+      .btn-cancel {
+        min-height: 44px;
       }
     }
   `],

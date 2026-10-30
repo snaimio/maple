@@ -788,23 +788,70 @@ interface WeeklyAnalyticsResponse {
     }
 
     /* Responsive */
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .leaderboard-page {
-        padding: 20px 12px;
+        padding: 24px 16px;
+      }
+
+      .page-title {
+        font-size: 26px;
       }
 
       .podium-section {
-        gap: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
       }
 
       .card-gold {
-        padding: 20px 10px;
-        min-height: 240px;
+        order: 1;
+        min-height: auto;
+        padding: 20px 16px;
+      }
+
+      .card-silver {
+        order: 2;
+        min-height: auto;
+        padding: 16px;
+      }
+
+      .card-bronze {
+        order: 3;
+        min-height: auto;
+        padding: 16px;
       }
 
       .avatar-gold {
-        width: 56px;
-        height: 56px;
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+      }
+
+      .points-first {
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .leaderboard-page {
+        padding: 16px 12px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
+      .card-gold {
+        padding: 18px 14px;
+      }
+
+      .avatar-gold {
+        width: 52px;
+        height: 52px;
         font-size: 18px;
       }
 
@@ -818,8 +865,7 @@ interface WeeklyAnalyticsResponse {
 
       .card-silver,
       .card-bronze {
-        padding: 16px 8px;
-        min-height: 180px;
+        padding: 14px 12px;
       }
 
       .avatar-silver,
@@ -830,7 +876,7 @@ interface WeeklyAnalyticsResponse {
       }
 
       .points-secondary {
-        font-size: 18px;
+        font-size: 20px;
       }
 
       .name-secondary {
@@ -843,7 +889,11 @@ interface WeeklyAnalyticsResponse {
       }
 
       .row-sparkline-col {
-        display: none;
+        display: none !important;
+      }
+
+      .btn-retry {
+        min-height: 44px;
       }
     }
   `],

@@ -310,13 +310,71 @@ import { AuthService } from '../../../core/services/auth.service';
         flex-direction: column;
       }
       .brand-panel {
-        padding: 2.5rem 1.5rem;
+        flex: initial;
+        padding: 1.5rem 1.25rem;
+      }
+      .brand-content {
+        text-align: center;
+        max-width: 100%;
+      }
+      .logo-wrapper {
+        justify-content: center;
+        margin-bottom: 0.25rem;
       }
       .brand-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
       }
-      .brand-tagline {
-        font-size: 1rem;
+      .brand-tagline,
+      .brand-badge {
+        display: none;
+      }
+      .form-panel {
+        flex: 1;
+        padding: 24px;
+        align-items: flex-start;
+      }
+      .form-card {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .title {
+        font-size: 1.5rem;
+      }
+      .btn-submit {
+        min-height: 44px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-panel {
+        padding: 1rem 1rem;
+      }
+      .brand-icon {
+        width: 30px;
+        height: 30px;
+      }
+      .brand-title {
+        font-size: 1.4rem;
+      }
+      .form-panel {
+        padding: 20px 16px;
+      }
+      .form-card {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .title {
+        font-size: 1.25rem;
+      }
+      .subtitle {
+        font-size: 0.85rem;
+      }
+      .input {
+        min-height: 44px;
+        font-size: 16px;
+      }
+      .btn-submit {
+        min-height: 44px;
       }
     }
   `]

@@ -246,6 +246,34 @@ import { AuthService } from '../../../core/services/auth.service';
     .link:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 480px) {
+      .page-container {
+        padding: 16px;
+      }
+
+      .card {
+        padding: 24px;
+        border-radius: 12px;
+      }
+
+      .heading {
+        font-size: 24px;
+      }
+
+      .subtext {
+        font-size: 13px;
+      }
+
+      .input {
+        min-height: 44px;
+        font-size: 16px;
+      }
+
+      .btn-primary {
+        min-height: 44px;
+      }
+    }
   `]
 })
 export class JoinComponent {

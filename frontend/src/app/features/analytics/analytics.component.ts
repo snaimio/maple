@@ -314,11 +314,12 @@ interface MemberResponseItem {
     /* Responsive */
     @media (max-width: 768px) {
       .analytics-page {
-        padding: 20px 12px;
+        padding: 24px 16px;
       }
 
       .charts-two-col {
         grid-template-columns: 1fr;
+        gap: 20px;
       }
 
       .chart-card {
@@ -327,6 +328,37 @@ interface MemberResponseItem {
 
       .chart-canvas-wrapper {
         height: 260px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .analytics-page {
+        padding: 16px;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      .page-subtitle {
+        font-size: 13px;
+      }
+
+      .chart-card {
+        padding: 14px;
+        border-radius: 12px;
+      }
+
+      .card-title {
+        font-size: 16px;
+      }
+
+      .chart-canvas-wrapper {
+        height: 240px;
+      }
+
+      .btn-retry {
+        min-height: 44px;
       }
     }
   `],
