@@ -80,13 +80,15 @@ class AssignmentController
     {
         $userId = Auth::requireLogin();
 
-        $filterUserId = Request::query('user_id');
-        $filterStatus = Request::query('status');
+        $filterUserId      = Request::query('user_id');
+        $filterStatus      = Request::query('status');
+        $filterHouseholdId = Request::query('household_id');
 
         $sql = "SELECT
                     a.id, a.chore_id, a.assigned_to, a.assigned_by,
                     a.due_date, a.status, a.created_at, a.updated_at,
                     c.title AS chore_title,
+                    c.description AS chore_description,
                     c.points AS chore_points,
                     c.household_id,
                     assignee.display_name AS assigned_to_name,
@@ -109,6 +111,10 @@ class AssignmentController
             $sql .= " AND a.status = ?";
             $params[] = $filterStatus;
         }
+        if ($filterHouseholdId !== null) {
+            $sql .= " AND c.household_id = ?";
+            $params[] = (int) $filterHouseholdId;
+        }
 
         $sql .= " ORDER BY a.due_date ASC, a.created_at DESC";
 
@@ -116,19 +122,20 @@ class AssignmentController
         $stmt->execute($params);
 
         $assignments = array_map(fn($r) => [
-            'id'               => (int) $r['id'],
-            'chore_id'         => (int) $r['chore_id'],
-            'chore_title'      => $r['chore_title'],
-            'chore_points'     => (int) $r['chore_points'],
-            'household_id'     => (int) $r['household_id'],
-            'assigned_to'      => (int) $r['assigned_to'],
-            'assigned_to_name' => $r['assigned_to_name'],
-            'assigned_by'      => (int) $r['assigned_by'],
-            'assigned_by_name' => $r['assigned_by_name'],
-            'due_date'         => $r['due_date'],
-            'status'           => $r['status'],
-            'created_at'       => $r['created_at'],
-            'updated_at'       => $r['updated_at'],
+            'id'                => (int) $r['id'],
+            'chore_id'          => (int) $r['chore_id'],
+            'chore_title'       => $r['chore_title'],
+            'chore_description' => $r['chore_description'],
+            'chore_points'      => (int) $r['chore_points'],
+            'household_id'      => (int) $r['household_id'],
+            'assigned_to'       => (int) $r['assigned_to'],
+            'assigned_to_name'  => $r['assigned_to_name'],
+            'assigned_by'       => (int) $r['assigned_by'],
+            'assigned_by_name'  => $r['assigned_by_name'],
+            'due_date'          => $r['due_date'],
+            'status'            => $r['status'],
+            'created_at'        => $r['created_at'],
+            'updated_at'        => $r['updated_at'],
         ], $stmt->fetchAll());
 
         Response::json(['assignments' => $assignments]);
