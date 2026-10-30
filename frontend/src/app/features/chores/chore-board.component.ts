@@ -2,7 +2,8 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { AssignmentService } from '../../core/services/assignment.service';
-import { Assignment } from '../../core/models';
+import { Assignment, Chore } from '../../core/models';
+import { ChoreFormComponent } from './chore-form.component';
 
 interface BoardColumn {
   key: 'pending' | 'in_progress' | 'submitted' | 'approved';
@@ -21,7 +22,7 @@ interface BoardColumn {
 @Component({
   selector: 'app-chore-board',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, ChoreFormComponent],
   template: `
     <div class="board-page">
       <!-- Header -->
@@ -191,35 +192,58 @@ interface BoardColumn {
 
             <!-- Modal Footer / Actions -->
             <div class="modal-footer">
-              @if (assignment.status === 'submitted') {
-                <div class="approval-actions">
+              <div class="modal-footer-left">
+                @if (currentUser()?.role === 'parent') {
                   <button
                     type="button"
-                    class="btn-reject"
-                    (click)="onReject(assignment)"
+                    class="btn-edit"
+                    (click)="onEditChore(assignment)"
                   >
-                    Reject
+                    Edit
                   </button>
+                }
+              </div>
+
+              <div class="modal-footer-right">
+                @if (assignment.status === 'submitted') {
+                  <div class="approval-actions">
+                    <button
+                      type="button"
+                      class="btn-reject"
+                      (click)="onReject(assignment)"
+                    >
+                      Reject
+                    </button>
+                    <button
+                      type="button"
+                      class="btn-approve"
+                      (click)="onApprove(assignment)"
+                    >
+                      Approve
+                    </button>
+                  </div>
+                } @else {
                   <button
                     type="button"
-                    class="btn-approve"
-                    (click)="onApprove(assignment)"
+                    class="btn-secondary"
+                    (click)="closeModal()"
                   >
-                    Approve
+                    Close
                   </button>
-                </div>
-              } @else {
-                <button
-                  type="button"
-                  class="btn-secondary"
-                  (click)="closeModal()"
-                >
-                  Close
-                </button>
-              }
+                }
+              </div>
             </div>
           </div>
         </div>
+      }
+
+      <!-- Chore Create / Edit Modal Form -->
+      @if (showCreateForm()) {
+        <app-chore-form
+          [chore]="editingChore()"
+          (saved)="onFormSaved()"
+          (cancelled)="onFormCancelled()"
+        ></app-chore-form>
       }
     </div>
   `,
@@ -713,9 +737,38 @@ interface BoardColumn {
       padding: 16px 24px 24px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 12px;
       border-top: 1px solid #F3F4F6;
+    }
+
+    .modal-footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-footer-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+
+    .btn-edit {
+      padding: 9px 16px;
+      background-color: #FFFFFF;
+      color: #0F766E;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid #0F766E;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .btn-edit:hover {
+      background-color: #F0FDFA;
     }
 
     .approval-actions {
@@ -796,6 +849,8 @@ export class ChoreBoardComponent implements OnInit {
   readonly error = signal<string | null>(null);
   readonly assignments = signal<Assignment[]>([]);
   readonly selectedAssignment = signal<Assignment | null>(null);
+  readonly showCreateForm = signal(false);
+  readonly editingChore = signal<Chore | null>(null);
 
   readonly currentUser = computed(() => {
     const user = this.authService.currentUser();
@@ -859,10 +914,39 @@ export class ChoreBoardComponent implements OnInit {
   }
 
   onNewChore(): void {
-    // Navigates or logs action for the chore creation form
-    this.router.navigate(['/chores/new']).catch(() => {
-      console.log('+ New Chore triggered');
-    });
+    this.editingChore.set(null);
+    this.showCreateForm.set(true);
+  }
+
+  onEditChore(assignment: Assignment): void {
+    const choreObj: Chore = (assignment as any).chore || {
+      id: assignment.chore_id,
+      household_id: assignment.household_id,
+      title: assignment.chore_title,
+      description: assignment.chore_description || assignment.description || null,
+      points: assignment.chore_points,
+      category: null,
+      recurrence: 'none',
+      recurrence_days: null,
+      is_active: true,
+      created_by: assignment.assigned_by,
+      created_at: assignment.created_at,
+      updated_at: assignment.updated_at,
+    };
+    this.editingChore.set(choreObj);
+    this.selectedAssignment.set(null);
+    this.showCreateForm.set(true);
+  }
+
+  onFormSaved(): void {
+    this.showCreateForm.set(false);
+    this.editingChore.set(null);
+    this.loadBoardData();
+  }
+
+  onFormCancelled(): void {
+    this.showCreateForm.set(false);
+    this.editingChore.set(null);
   }
 
   onApprove(assignment: Assignment): void {
