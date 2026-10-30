@@ -9,6 +9,58 @@ use Maple\Services\PointsService;
 
 class RedemptionController
 {
+    public function index(array $params): void
+    {
+        $userId      = Auth::requireLogin();
+        $householdId = (int) $params['id'];
+
+        $this->assertMember($householdId, $userId);
+
+        $filterStatus = Request::query('status', 'pending');
+
+        $sql = "SELECT 
+                    rr.id,
+                    rr.status,
+                    rr.requested_at AS created_at,
+                    r.id AS reward_id,
+                    r.title AS reward_title,
+                    r.cost_points,
+                    u.id AS user_id,
+                    u.display_name AS child_name,
+                    u.avatar_url AS child_avatar_url
+                FROM reward_redemptions rr
+                JOIN rewards r ON r.id = rr.reward_id
+                JOIN users u ON u.id = rr.redeemed_by
+                WHERE r.household_id = ?";
+
+        $queryParams = [$householdId];
+
+        if ($filterStatus !== null && $filterStatus !== '' && $filterStatus !== 'all') {
+            $sql .= " AND rr.status = ?";
+            $queryParams[] = $filterStatus;
+        }
+
+        $sql .= " ORDER BY rr.requested_at ASC";
+
+        $stmt = Database::conn()->prepare($sql);
+        $stmt->execute($queryParams);
+        $rows = $stmt->fetchAll();
+
+        $redemptions = array_map(fn($r) => [
+            'id'               => (int) $r['id'],
+            'reward_id'        => (int) $r['reward_id'],
+            'reward_title'     => $r['reward_title'],
+            'cost_points'      => (int) $r['cost_points'],
+            'user_id'          => (int) $r['user_id'],
+            'child_name'       => $r['child_name'],
+            'child_avatar_url' => $r['child_avatar_url'],
+            'status'           => $r['status'],
+            'created_at'       => $r['created_at'],
+        ], $rows);
+
+        Response::json(['redemptions' => $redemptions]);
+    }
+
     public function redeem(array $params): void
     {
         $userId   = Auth::requireLogin();
@@ -168,6 +220,17 @@ class RedemptionController
             Response::error('Redemption not found', 404);
         }
         return $row;
+    }
+
+    private function assertMember(int $householdId, int $userId): void
+    {
+        $stmt = Database::conn()->prepare(
+            "SELECT id FROM household_members WHERE household_id = ? AND user_id = ?"
+        );
+        $stmt->execute([$householdId, $userId]);
+        if (!$stmt->fetch()) {
+            Response::error('You are not a member of this household', 403);
+        }
     }
 
     private function assertParent(int $householdId, int $userId): void

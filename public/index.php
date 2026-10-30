@@ -85,7 +85,8 @@ $router->put   ('/api/v1/rewards/{id}',            [RewardController::class, 'up
 $router->delete('/api/v1/rewards/{id}',            [RewardController::class, 'destroy']);
 
 // Redemptions
-$router->post('/api/v1/rewards/{id}/redeem',      [RedemptionController::class, 'redeem']);
+$router->get ('/api/v1/households/{id}/redemptions', [RedemptionController::class, 'index']);
+$router->post('/api/v1/rewards/{id}/redeem',          [RedemptionController::class, 'redeem']);
 $router->put ('/api/v1/redemptions/{id}/approve', [RedemptionController::class, 'approve']);
 $router->put ('/api/v1/redemptions/{id}/reject',  [RedemptionController::class, 'reject']);
 
