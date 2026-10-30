@@ -79,6 +79,16 @@ export class App implements OnInit {
   ];
 
   ngOnInit(): void {
+    // Do not run session check on the login page
+    if (this.router.url === '/login' || window.location.pathname === '/login' || window.location.pathname.startsWith('/login')) {
+      return;
+    }
+
+    if (this.authService.isLoggingIn() || this.authService.justLoggedIn()) {
+      return;
+    }
+
+    // Only check session on cold start
     if (!this.currentUser()) {
       this.authService.me().subscribe({
         error: () => {

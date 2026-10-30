@@ -341,13 +341,17 @@ export class LoginComponent {
 
     this.loading.set(true);
     this.error.set(null);
+    this.auth.startLogin();
 
     this.auth.login(this.email().trim(), this.password()).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard']).then(() => {
+          this.auth.finishLogin();
+        });
       },
       error: (err: HttpErrorResponse) => {
+        this.auth.finishLogin();
         this.loading.set(false);
         const message = err.error?.error || 'Login failed. Please check your credentials.';
         this.error.set(message);

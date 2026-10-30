@@ -1,5 +1,5 @@
 import { inject, Injectable, signal, computed, Signal } from '@angular/core';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, throwError, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { User, Household } from '../models';
 
@@ -18,7 +18,50 @@ export interface AuthResponse {
 })
 export class AuthService {
   private readonly api = inject(ApiService);
-  private readonly _currentUser = signal<User | null>(null);
+  private loadInitialUser(): User | null {
+    try {
+      const stored = localStorage.getItem('maple_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private readonly _currentUser = signal<User | null>(this.loadInitialUser());
+
+  private loadInitialIsLoggingIn(): boolean {
+    try {
+      return localStorage.getItem('maple_is_logging_in') === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  private readonly isLoggingInSignal = signal<boolean>(this.loadInitialIsLoggingIn());
+  readonly isLoggingIn = this.isLoggingInSignal.asReadonly();
+
+  private readonly _justLoggedIn = signal<boolean>(false);
+  readonly justLoggedIn = this._justLoggedIn.asReadonly();
+
+  startLogin(): void {
+    this.isLoggingInSignal.set(true);
+    try {
+      localStorage.setItem('maple_is_logging_in', 'true');
+    } catch {
+      // ignore
+    }
+  }
+
+  finishLogin(): void {
+    this.isLoggingInSignal.set(false);
+    this._justLoggedIn.set(true);
+    setTimeout(() => this._justLoggedIn.set(false), 5000);
+    try {
+      localStorage.removeItem('maple_is_logging_in');
+    } catch {
+      // ignore
+    }
+  }
 
   private loadInitialHouseholdId(): number | null {
     try {
@@ -129,12 +172,36 @@ export class AuthService {
       display_name: displayName,
     }).pipe(
       tap((response) => {
+        if (response.user) {
+          try {
+            localStorage.setItem('maple_user', JSON.stringify(response.user));
+            localStorage.setItem('maple_user_id', String(response.user.id));
+          } catch {
+            // ignore
+          }
+        }
+        if (response.household?.id) {
+          try {
+            localStorage.setItem('maple_household_id', String(response.household.id));
+          } catch {
+            // ignore
+          }
+        }
+        if (response.household?.role) {
+          try {
+            localStorage.setItem('maple_household_role', response.household.role);
+          } catch {
+            // ignore
+          }
+        }
         this._currentUser.set(response.user);
         this.extractHousehold(response);
         if (response.household?.role) {
           const role = response.household.role === 'child' ? 'child' : 'parent';
           this.setCurrentHouseholdRole(role);
         }
+        this._justLoggedIn.set(true);
+        setTimeout(() => this._justLoggedIn.set(false), 5000);
       })
     );
   }
@@ -152,12 +219,36 @@ export class AuthService {
       password,
     }).pipe(
       tap((response) => {
+        if (response.user) {
+          try {
+            localStorage.setItem('maple_user', JSON.stringify(response.user));
+            localStorage.setItem('maple_user_id', String(response.user.id));
+          } catch {
+            // ignore
+          }
+        }
+        if (response.household?.id) {
+          try {
+            localStorage.setItem('maple_household_id', String(response.household.id));
+          } catch {
+            // ignore
+          }
+        }
+        if (response.household?.role) {
+          try {
+            localStorage.setItem('maple_household_role', response.household.role);
+          } catch {
+            // ignore
+          }
+        }
         this._currentUser.set(response.user);
         this.extractHousehold(response);
         if (response.household?.role) {
           const role = response.household.role === 'child' ? 'child' : 'parent';
           this.setCurrentHouseholdRole(role);
         }
+        this._justLoggedIn.set(true);
+        setTimeout(() => this._justLoggedIn.set(false), 5000);
       })
     );
   }
@@ -171,9 +262,13 @@ export class AuthService {
     return this.api.post<void>('/auth/logout').pipe(
       tap(() => {
         this._currentUser.set(null);
+        this.finishLogin();
+        this._justLoggedIn.set(false);
         this.currentHouseholdIdSignal.set(null);
         this.setCurrentHouseholdRole(null);
         try {
+          localStorage.removeItem('maple_user');
+          localStorage.removeItem('maple_user_id');
           localStorage.removeItem('maple_household_id');
           localStorage.removeItem('maple_household_role');
         } catch {
@@ -184,31 +279,68 @@ export class AuthService {
   }
 
   /**
-   * Fetches the current user profile from the backend session cookie.
+   * Fetches the current user profile from local state or the backend session cookie.
    * Updates currentUser on success, or sets it to null on failure.
    *
    * @returns Observable emitting the authenticated User profile
    */
-  me(): Observable<AuthResponse> {
-    return this.api.get<AuthResponse>('/auth/me').pipe(
-      tap({
-        next: (response) => {
-          this._currentUser.set(response.user);
-          this.extractHousehold(response);
-          if (response.household?.role) {
-            const role = response.household.role === 'child' ? 'child' : 'parent';
-            this.setCurrentHouseholdRole(role);
+  me(): Observable<any> {
+    // 1. Try localStorage FIRST. If found, we are logged in.
+    try {
+      const storedUser = localStorage.getItem('maple_user');
+      const storedHouseholdId = localStorage.getItem('maple_household_id');
+      const storedRole = localStorage.getItem('maple_household_role');
+
+      if (storedUser && storedHouseholdId) {
+        const user = JSON.parse(storedUser);
+        this._currentUser.set(user);
+        this.currentHouseholdIdSignal.set(Number(storedHouseholdId));
+        if (storedRole) {
+          this.currentHouseholdRoleSignal.set(storedRole as any);
+        }
+
+        return of({ user, household: { id: Number(storedHouseholdId), role: storedRole } });
+      }
+    } catch {
+      // ignore
+    }
+
+    // 2. Fallback: If we have currentUser in memory, return it
+    if (this.currentUser() !== null) {
+      const householdId = this.currentHouseholdId();
+      const role = this.currentHouseholdRole();
+      return of({
+        user: this.currentUser(),
+        household: householdId ? { id: householdId, role: role || undefined } : null,
+      });
+    }
+
+    // 3. Last resort: Call the backend
+    return this.api.get<any>('/auth/me').pipe(
+      tap((res) => {
+        if (res?.user) {
+          this._currentUser.set(res.user);
+          try {
+            localStorage.setItem('maple_user', JSON.stringify(res.user));
+            localStorage.setItem('maple_user_id', String(res.user.id));
+          } catch {}
+          if (res.household?.id) {
+            this.currentHouseholdIdSignal.set(res.household.id);
+            try {
+              localStorage.setItem('maple_household_id', String(res.household.id));
+            } catch {}
           }
-        },
-        error: () => {
-          this._currentUser.set(null);
-          this.setCurrentHouseholdRole(null);
-        },
+          if (res.household?.role) {
+            this.currentHouseholdRoleSignal.set(res.household.role);
+            try {
+              localStorage.setItem('maple_household_role', res.household.role);
+            } catch {}
+          }
+        }
       }),
-      catchError((error) => {
+      catchError((err) => {
         this._currentUser.set(null);
-        this.setCurrentHouseholdRole(null);
-        return throwError(() => error);
+        return of(null);
       })
     );
   }
