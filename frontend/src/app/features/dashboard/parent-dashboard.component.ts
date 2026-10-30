@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { ApiService } from '../../core/services/api.service';
@@ -892,6 +892,7 @@ export class ParentDashboardComponent implements OnInit {
   private readonly choreService = inject(ChoreService);
   private readonly assignmentService = inject(AssignmentService);
   private readonly leaderboardService = inject(LeaderboardService);
+  private readonly router = inject(Router);
 
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
@@ -933,6 +934,10 @@ export class ParentDashboardComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    if (this.authService.currentHouseholdRole() === 'child') {
+      this.router.navigate(['/child-dashboard']);
+      return;
+    }
     this.loadDashboardData();
   }
 

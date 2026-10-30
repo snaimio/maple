@@ -1,7 +1,9 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { AssignmentService } from '../../core/services/assignment.service';
+import { ChoreService } from '../../core/services/chore.service';
 import { Assignment, Chore } from '../../core/models';
 import { ChoreFormComponent } from './chore-form.component';
 
@@ -241,6 +243,7 @@ interface BoardColumn {
       @if (showCreateForm()) {
         <app-chore-form
           [chore]="editingChore()"
+          [assignment]="editingAssignment()"
           (saved)="onFormSaved()"
           (cancelled)="onFormCancelled()"
         ></app-chore-form>
@@ -911,6 +914,7 @@ interface BoardColumn {
 export class ChoreBoardComponent implements OnInit {
   readonly authService = inject(AuthService);
   private readonly assignmentService = inject(AssignmentService);
+  private readonly choreService = inject(ChoreService);
   private readonly router = inject(Router);
 
   readonly loading = signal(true);
@@ -919,6 +923,7 @@ export class ChoreBoardComponent implements OnInit {
   readonly selectedAssignment = signal<Assignment | null>(null);
   readonly showCreateForm = signal(false);
   readonly editingChore = signal<Chore | null>(null);
+  readonly editingAssignment = signal<Assignment | null>(null);
 
   readonly currentHouseholdRole = this.authService.currentHouseholdRole;
 
@@ -954,9 +959,34 @@ export class ChoreBoardComponent implements OnInit {
     this.loading.set(true);
     this.error.set(null);
 
-    this.assignmentService.listByHousehold(householdId).subscribe({
-      next: (data) => {
-        this.assignments.set(data || []);
+    forkJoin({
+      assignments: this.assignmentService.listByHousehold(householdId),
+      chores: this.choreService.list(householdId),
+    }).subscribe({
+      next: ({ assignments, chores }) => {
+        const activeAssignments = assignments || [];
+        const assignedChoreIds = new Set(activeAssignments.map((a) => a.chore_id));
+        const unassignedChoreCards: Assignment[] = (chores || [])
+          .filter((c) => c.is_active && !assignedChoreIds.has(c.id))
+          .map((c) => ({
+            id: -c.id,
+            chore_id: c.id,
+            assigned_to: 0,
+            assigned_by: c.created_by,
+            due_date: new Date().toISOString().split('T')[0],
+            status: 'pending' as const,
+            created_at: c.created_at,
+            updated_at: c.updated_at,
+            chore_title: c.title,
+            chore_description: c.description || undefined,
+            chore_points: c.points,
+            household_id: c.household_id,
+            assigned_to_name: 'Unassigned',
+            child_avatar_url: null,
+            assigned_by_name: c.created_by_name || 'Parent',
+          }));
+
+        this.assignments.set([...activeAssignments, ...unassignedChoreCards]);
         this.loading.set(false);
       },
       error: () => {
@@ -976,6 +1006,7 @@ export class ChoreBoardComponent implements OnInit {
 
   onNewChore(): void {
     this.editingChore.set(null);
+    this.editingAssignment.set(null);
     this.showCreateForm.set(true);
   }
 
@@ -995,6 +1026,7 @@ export class ChoreBoardComponent implements OnInit {
       updated_at: assignment.updated_at,
     };
     this.editingChore.set(choreObj);
+    this.editingAssignment.set(assignment);
     this.selectedAssignment.set(null);
     this.showCreateForm.set(true);
   }
@@ -1002,12 +1034,14 @@ export class ChoreBoardComponent implements OnInit {
   onFormSaved(): void {
     this.showCreateForm.set(false);
     this.editingChore.set(null);
+    this.editingAssignment.set(null);
     this.loadBoardData();
   }
 
   onFormCancelled(): void {
     this.showCreateForm.set(false);
     this.editingChore.set(null);
+    this.editingAssignment.set(null);
   }
 
   onApprove(assignment: Assignment): void {

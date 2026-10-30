@@ -3,9 +3,10 @@ import { FormsModule } from '@angular/forms';
 import { catchError } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { ChoreService } from '../../core/services/chore.service';
+import { AssignmentService } from '../../core/services/assignment.service';
 import { HouseholdService } from '../../core/services/household.service';
 import { ApiService } from '../../core/services/api.service';
-import { Chore, HouseholdMember } from '../../core/models';
+import { Chore, Assignment, HouseholdMember } from '../../core/models';
 
 /**
  * Modal form component for creating and editing household chores.
@@ -114,38 +115,36 @@ import { Chore, HouseholdMember } from '../../core/models';
             </div>
           </div>
 
-          <!-- Assignment Fields (Create mode) -->
-          @if (!chore) {
-            <div class="form-row">
-              <!-- Assigned To Field -->
-              <div class="form-group">
-                <label for="assignee" class="form-label">Assigned To</label>
-                <select
-                  id="assignee"
-                  class="form-select"
-                  [value]="assigneeId() ?? ''"
-                  (change)="onAssigneeChange($any($event.target).value)"
-                >
-                  <option value="">Unassigned</option>
-                  @for (child of children(); track child.user_id) {
-                    <option [value]="child.user_id">{{ child.display_name }}</option>
-                  }
-                </select>
-              </div>
-
-              <!-- Due Date Field -->
-              <div class="form-group">
-                <label for="dueDate" class="form-label">Due Date</label>
-                <input
-                  id="dueDate"
-                  type="date"
-                  class="form-input"
-                  [value]="dueDate()"
-                  (input)="dueDate.set($any($event.target).value)"
-                />
-              </div>
+          <!-- Assignment Fields -->
+          <div class="form-row">
+            <!-- Assigned To Field -->
+            <div class="form-group">
+              <label for="assignee" class="form-label">Assigned To</label>
+              <select
+                id="assignee"
+                class="form-select"
+                [value]="assigneeId() ?? ''"
+                (change)="onAssigneeChange($any($event.target).value)"
+              >
+                <option value="">Unassigned</option>
+                @for (child of children(); track child.user_id) {
+                  <option [value]="child.user_id">{{ child.display_name }}</option>
+                }
+              </select>
             </div>
-          }
+
+            <!-- Due Date Field -->
+            <div class="form-group">
+              <label for="dueDate" class="form-label">Due Date</label>
+              <input
+                id="dueDate"
+                type="date"
+                class="form-input"
+                [value]="dueDate()"
+                (input)="dueDate.set($any($event.target).value)"
+              />
+            </div>
+          </div>
 
           <!-- Form Footer Actions -->
           <div class="form-footer">
@@ -462,11 +461,13 @@ import { Chore, HouseholdMember } from '../../core/models';
 })
 export class ChoreFormComponent implements OnInit {
   @Input() chore: Chore | null = null;
+  @Input() assignment: Assignment | null = null;
   @Output() saved = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();
 
   private readonly authService = inject(AuthService);
   private readonly choreService = inject(ChoreService);
+  private readonly assignmentService = inject(AssignmentService);
   private readonly householdService = inject(HouseholdService);
   private readonly apiService = inject(ApiService);
 
@@ -489,6 +490,15 @@ export class ChoreFormComponent implements OnInit {
       this.description.set(this.chore.description || '');
       this.points.set(this.chore.points || 10);
       this.category.set(this.chore.category || 'Kitchen');
+    }
+
+    if (this.assignment) {
+      if (this.assignment.assigned_to && this.assignment.assigned_to > 0) {
+        this.assigneeId.set(this.assignment.assigned_to);
+      }
+      if (this.assignment.due_date) {
+        this.dueDate.set(this.assignment.due_date);
+      }
     }
 
     const householdId = this.authService.currentHouseholdId();
@@ -547,8 +557,23 @@ export class ChoreFormComponent implements OnInit {
         category: this.category() || null,
       }).subscribe({
         next: () => {
-          this.loading.set(false);
-          this.saved.emit();
+          const assignee = this.assigneeId();
+          if (assignee !== null) {
+            const dueDateVal = this.dueDate() || new Date().toISOString().split('T')[0];
+            this.assignmentService.assign(this.chore!.id, [assignee], dueDateVal).subscribe({
+              next: () => {
+                this.loading.set(false);
+                this.saved.emit();
+              },
+              error: () => {
+                this.loading.set(false);
+                this.saved.emit();
+              },
+            });
+          } else {
+            this.loading.set(false);
+            this.saved.emit();
+          }
         },
         error: (err) => {
           this.loading.set(false);
@@ -566,23 +591,8 @@ export class ChoreFormComponent implements OnInit {
         next: (newChore) => {
           const assignee = this.assigneeId();
           if (assignee !== null) {
-            const currentUserId = this.authService.currentUser()?.id || 0;
             const dueDateVal = this.dueDate() || new Date().toISOString().split('T')[0];
-            const payload = {
-              chore_id: newChore.id,
-              assigned_to: assignee,
-              assigned_by: currentUserId,
-              due_date: dueDateVal,
-            };
-
-            this.apiService.post('/assignments', payload).pipe(
-              catchError(() => {
-                return this.apiService.post(`/chores/${newChore.id}/assign`, {
-                  user_ids: [assignee],
-                  due_date: dueDateVal,
-                });
-              })
-            ).subscribe({
+            this.assignmentService.assign(newChore.id, [assignee], dueDateVal).subscribe({
               next: () => {
                 this.loading.set(false);
                 this.saved.emit();

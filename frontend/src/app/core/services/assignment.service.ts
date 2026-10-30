@@ -50,6 +50,21 @@ export class AssignmentService {
   }
 
   /**
+   * Assigns a chore to one or more children with a specified due date.
+   *
+   * @param choreId The chore ID
+   * @param userIds Array of child user IDs to assign
+   * @param dueDate Due date string (YYYY-MM-DD)
+   * @returns Observable emitting the assignment response
+   */
+  assign(choreId: number, userIds: number[], dueDate: string): Observable<{ assignment_ids: number[]; count: number }> {
+    return this.api.post<{ assignment_ids: number[]; count: number }>(`/chores/${choreId}/assign`, {
+      user_ids: userIds,
+      due_date: dueDate,
+    });
+  }
+
+  /**
    * Retrieves assignments assigned to a specific user within a household.
    *
    * @param userId The user (child) ID
