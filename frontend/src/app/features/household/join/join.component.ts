@@ -277,6 +277,7 @@ export class JoinComponent {
       next: (household) => {
         this.loading.set(false);
         this.authService.setCurrentHouseholdId(household.id);
+        this.authService.setCurrentHouseholdRole('child');
         this.router.navigate(['/dashboard']);
       },
       error: (err: HttpErrorResponse) => {

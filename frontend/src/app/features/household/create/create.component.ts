@@ -374,6 +374,7 @@ export class CreateComponent {
         this.loading.set(false);
         this.createdInviteCode.set(household.invite_code || null);
         this.authService.setCurrentHouseholdId(household.id);
+        this.authService.setCurrentHouseholdRole('parent');
       },
       error: (err: HttpErrorResponse) => {
         this.loading.set(false);

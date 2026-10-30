@@ -6,6 +6,7 @@ import { ChildDashboardComponent } from './features/dashboard/child-dashboard.co
 import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-dashboard.component';
 import { ChoreBoardComponent } from './features/chores/chore-board.component';
 import { ApprovalsQueueComponent } from './features/completions/approvals-queue.component';
+import { RewardsComponent } from './features/rewards/rewards.component';
 import { CreateComponent } from './features/household/create/create.component';
 import { JoinComponent } from './features/household/join/join.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -56,7 +57,7 @@ export const routes: Routes = [
   },
   {
     path: 'rewards',
-    component: PlaceholderDashboardComponent,
+    component: RewardsComponent,
     canActivate: [authGuard],
   },
   {

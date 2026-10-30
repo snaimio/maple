@@ -111,11 +111,12 @@ export interface Reward {
   description: string | null;
   cost_points: number;
   cost?: number;
+  icon?: string | null;
   is_active: boolean;
-  created_by: number;
+  created_by?: number;
   created_by_name?: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 /**
@@ -124,12 +125,17 @@ export interface Reward {
 export interface Redemption {
   id: number;
   reward_id: number;
-  reward_title?: string;
+  reward_title: string;
+  cost_points?: number;
+  user_id?: number;
+  child_name?: string;
+  child_avatar_url?: string | null;
   redeemed_by?: number;
-  points_spent: number;
+  points_spent?: number;
   status: 'pending' | 'approved' | 'rejected' | 'fulfilled';
   reviewed_by?: number | null;
   rejection_note?: string | null;
+  created_at?: string;
   requested_at?: string;
   resolved_at?: string | null;
 }

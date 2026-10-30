@@ -32,7 +32,7 @@ interface BoardColumn {
           <p class="page-subtitle">Track family chores and progress in real-time</p>
         </div>
         <div class="header-actions">
-          @if (currentUser()?.role === 'parent') {
+          @if (currentHouseholdRole() === 'parent') {
             <button type="button" class="btn-primary" (click)="onNewChore()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="btn-icon">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -193,7 +193,7 @@ interface BoardColumn {
             <!-- Modal Footer / Actions -->
             <div class="modal-footer">
               <div class="modal-footer-left">
-                @if (currentUser()?.role === 'parent') {
+                @if (currentHouseholdRole() === 'parent') {
                   <button
                     type="button"
                     class="btn-edit"
@@ -852,14 +852,7 @@ export class ChoreBoardComponent implements OnInit {
   readonly showCreateForm = signal(false);
   readonly editingChore = signal<Chore | null>(null);
 
-  readonly currentUser = computed(() => {
-    const user = this.authService.currentUser();
-    if (!user) return null;
-    return {
-      ...user,
-      role: user.role || 'parent',
-    };
-  });
+  readonly currentHouseholdRole = this.authService.currentHouseholdRole;
 
   readonly columns: BoardColumn[] = [
     { key: 'pending', title: 'Not Started', color: '#6B7280', badgeBg: '#E5E7EB' },

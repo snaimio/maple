@@ -29,7 +29,19 @@ export class AuthService {
     }
   }
 
+  private loadInitialHouseholdRole(): 'parent' | 'child' | null {
+    try {
+      const stored = localStorage.getItem('maple_household_role');
+      return stored === 'parent' || stored === 'child' ? stored : null;
+    } catch {
+      return null;
+    }
+  }
+
   private readonly currentHouseholdIdSignal = signal<number | null>(this.loadInitialHouseholdId());
+  private readonly currentHouseholdRoleSignal = signal<'parent' | 'child' | null>(
+    this.loadInitialHouseholdRole()
+  );
 
   /**
    * Read-only signal containing the currently authenticated user or null.
@@ -47,6 +59,12 @@ export class AuthService {
   readonly currentHouseholdId: Signal<number | null> = this.currentHouseholdIdSignal.asReadonly();
 
   /**
+   * Read-only signal containing the user's role in the currently active household or null.
+   */
+  readonly currentHouseholdRole: Signal<'parent' | 'child' | null> =
+    this.currentHouseholdRoleSignal.asReadonly();
+
+  /**
    * Sets the active household ID for the authenticated session.
    *
    * @param id The household ID
@@ -61,13 +79,38 @@ export class AuthService {
   }
 
   /**
-   * Extracts household identifier from authentication responses if present.
+   * Sets the active household role for the authenticated session.
+   *
+   * @param role The household role ('parent' | 'child' | null)
    */
-  private extractHouseholdId(response: unknown): void {
-    const res = response as { household?: { id?: number }; household_id?: number };
+  setCurrentHouseholdRole(role: 'parent' | 'child' | null): void {
+    this.currentHouseholdRoleSignal.set(role);
+    try {
+      if (role) {
+        localStorage.setItem('maple_household_role', role);
+      } else {
+        localStorage.removeItem('maple_household_role');
+      }
+    } catch {
+      // localStorage may be unavailable in some contexts
+    }
+  }
+
+  /**
+   * Extracts household identifier and role from authentication responses if present.
+   */
+  private extractHousehold(response: unknown): void {
+    const res = response as {
+      household?: { id?: number; role?: 'parent' | 'child' | string };
+      household_id?: number;
+    };
     const id = res?.household?.id ?? res?.household_id;
     if (id !== undefined && id !== null) {
       this.setCurrentHouseholdId(Number(id));
+    }
+    const role = res?.household?.role;
+    if (role === 'parent' || role === 'child') {
+      this.setCurrentHouseholdRole(role);
     }
   }
 
@@ -87,7 +130,11 @@ export class AuthService {
     }).pipe(
       tap((response) => {
         this._currentUser.set(response.user);
-        this.extractHouseholdId(response);
+        this.extractHousehold(response);
+        if (response.household?.role) {
+          const role = response.household.role === 'child' ? 'child' : 'parent';
+          this.setCurrentHouseholdRole(role);
+        }
       })
     );
   }
@@ -106,7 +153,11 @@ export class AuthService {
     }).pipe(
       tap((response) => {
         this._currentUser.set(response.user);
-        this.extractHouseholdId(response);
+        this.extractHousehold(response);
+        if (response.household?.role) {
+          const role = response.household.role === 'child' ? 'child' : 'parent';
+          this.setCurrentHouseholdRole(role);
+        }
       })
     );
   }
@@ -121,8 +172,10 @@ export class AuthService {
       tap(() => {
         this._currentUser.set(null);
         this.currentHouseholdIdSignal.set(null);
+        this.setCurrentHouseholdRole(null);
         try {
           localStorage.removeItem('maple_household_id');
+          localStorage.removeItem('maple_household_role');
         } catch {
           // ignore
         }
@@ -141,12 +194,20 @@ export class AuthService {
       tap({
         next: (response) => {
           this._currentUser.set(response.user);
-          this.extractHouseholdId(response);
+          this.extractHousehold(response);
+          if (response.household?.role) {
+            const role = response.household.role === 'child' ? 'child' : 'parent';
+            this.setCurrentHouseholdRole(role);
+          }
         },
-        error: () => this._currentUser.set(null),
+        error: () => {
+          this._currentUser.set(null);
+          this.setCurrentHouseholdRole(null);
+        },
       }),
       catchError((error) => {
         this._currentUser.set(null);
+        this.setCurrentHouseholdRole(null);
         return throwError(() => error);
       })
     );
