@@ -40,12 +40,19 @@ class AuthController
 
         Auth::login($userId);
 
+        $stmt = $pdo->prepare("SELECT created_at FROM users WHERE id = ?");
+        $stmt->execute([$userId]);
+        $createdUser = $stmt->fetch();
+
         Response::json([
             'user' => [
                 'id'           => $userId,
                 'email'        => $email,
                 'display_name' => $displayName,
+                'avatar_url'   => null,
+                'created_at'   => $createdUser ? $createdUser['created_at'] : date('Y-m-d H:i:s'),
             ],
+            'household' => null,
         ], 201);
     }
 
@@ -60,7 +67,7 @@ class AuthController
 
         $pdo  = Database::conn();
         $stmt = $pdo->prepare(
-            "SELECT id, email, password_hash, display_name FROM users WHERE email = ?"
+            "SELECT id, email, password_hash, display_name, avatar_url, created_at FROM users WHERE email = ?"
         );
         $stmt->execute([$email]);
         $user = $stmt->fetch();
@@ -76,12 +83,35 @@ class AuthController
 
         Auth::login((int) $user['id']);
 
+        $hStmt = $pdo->prepare(
+            "SELECT h.id, h.name, hm.role_in_household AS role
+             FROM households h
+             JOIN household_members hm ON hm.household_id = h.id
+             WHERE hm.user_id = ?
+             ORDER BY h.id ASC
+             LIMIT 1"
+        );
+        $hStmt->execute([(int) $user['id']]);
+        $hRow = $hStmt->fetch();
+
+        $household = null;
+        if ($hRow) {
+            $household = [
+                'id'   => (int) $hRow['id'],
+                'name' => $hRow['name'],
+                'role' => $hRow['role'],
+            ];
+        }
+
         Response::json([
             'user' => [
                 'id'           => (int) $user['id'],
                 'email'        => $user['email'],
                 'display_name' => $user['display_name'],
+                'avatar_url'   => $user['avatar_url'],
+                'created_at'   => $user['created_at'],
             ],
+            'household' => $household,
         ]);
     }
 
