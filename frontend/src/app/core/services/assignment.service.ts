@@ -32,4 +32,20 @@ export class AssignmentService {
         )
       );
   }
+
+  /**
+   * Retrieves all assignments for a given household.
+   *
+   * @param householdId The household ID
+   * @returns Observable emitting an array of Assignment records
+   */
+  listByHousehold(householdId: number): Observable<Assignment[]> {
+    return this.api
+      .get<AssignmentsResponse>('/assignments', { household_id: householdId })
+      .pipe(
+        map((res) =>
+          (res.assignments || []).filter((a) => a.household_id === householdId)
+        )
+      );
+  }
 }

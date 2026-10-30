@@ -7,6 +7,7 @@ export interface User {
   display_name: string;
   avatar_url?: string | null;
   created_at?: string;
+  role?: 'parent' | 'child' | 'admin';
 }
 
 /**
@@ -63,6 +64,8 @@ export interface Assignment {
   id: number;
   chore_id: number;
   chore_title: string;
+  chore_description?: string | null;
+  description?: string | null;
   chore_points: number;
   household_id: number;
   assigned_to: number;

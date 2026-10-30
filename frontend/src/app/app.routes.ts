@@ -3,6 +3,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { ParentDashboardComponent } from './features/dashboard/parent-dashboard.component';
 import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-dashboard.component';
+import { ChoreBoardComponent } from './features/chores/chore-board.component';
 import { CreateComponent } from './features/household/create/create.component';
 import { JoinComponent } from './features/household/join/join.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -38,7 +39,7 @@ export const routes: Routes = [
   },
   {
     path: 'chores',
-    component: PlaceholderDashboardComponent,
+    component: ChoreBoardComponent,
     canActivate: [authGuard],
   },
   {
