@@ -98,7 +98,7 @@ import { Reward, HouseholdMember, Redemption } from '../../core/models';
             <div class="empty-store-card">
               <span class="empty-emoji">🎁</span>
               <h3 class="empty-title">No rewards available yet</h3>
-              <p class="empty-subtitle">Ask a parent to add some rewards to the catalog!</p>
+              <p class="empty-subtitle">Ask a parent to add rewards!</p>
             </div>
           }
         </div>
@@ -151,7 +151,7 @@ import { Reward, HouseholdMember, Redemption } from '../../core/models';
                 (click)="confirmRedeem(item)"
               >
                 @if (actionLoading()) {
-                  <span>Requesting...</span>
+                  <span>Redeeming...</span>
                 } @else {
                   <span>Confirm Redeem</span>
                 }

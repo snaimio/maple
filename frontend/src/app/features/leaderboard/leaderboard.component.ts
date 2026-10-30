@@ -70,8 +70,8 @@ interface WeeklyAnalyticsResponse {
           @if (entries().length === 0) {
             <div class="empty-state">
               <span class="empty-icon" aria-hidden="true">🏆</span>
-              <h3 class="empty-title">No children in this household yet</h3>
-              <p class="empty-subtitle">Add some members to see the leaderboard!</p>
+              <h3 class="empty-title">No children yet</h3>
+              <p class="empty-subtitle">No children yet. Invite family members!</p>
             </div>
           } @else {
             <!-- Podium Section (2+ entries) -->
@@ -672,6 +672,7 @@ interface WeeklyAnalyticsResponse {
     .error-container {
       background: #FEF2F2;
       border: 1px solid #FCA5A5;
+      border-left: 4px solid #DC2626;
       border-radius: 12px;
       padding: 32px 24px;
       text-align: center;

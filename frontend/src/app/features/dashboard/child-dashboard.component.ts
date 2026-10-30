@@ -153,7 +153,7 @@ import { Assignment, Reward } from '../../core/models';
               <div class="empty-chores-card">
                 <span class="empty-emoji">🎉</span>
                 <h3 class="empty-title">All done!</h3>
-                <p class="empty-subtitle">No chores assigned right now. Enjoy your free time!</p>
+                <p class="empty-subtitle">🎉 All done! No chores assigned right now.</p>
               </div>
             }
           </div>

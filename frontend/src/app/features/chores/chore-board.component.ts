@@ -360,6 +360,7 @@ interface BoardColumn {
       gap: 16px;
       background-color: #FEF2F2;
       border: 1px solid #FCA5A5;
+      border-left: 4px solid #DC2626;
       border-radius: 12px;
       padding: 24px;
       max-width: 600px;

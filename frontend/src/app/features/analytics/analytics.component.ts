@@ -73,7 +73,7 @@ interface MemberResponseItem {
           <div class="empty-state">
             <span class="empty-icon" aria-hidden="true">📊</span>
             <h3 class="empty-title">No activity yet</h3>
-            <p class="empty-subtitle">Complete some chores to see analytics!</p>
+            <p class="empty-subtitle">No activity yet — complete some chores to see analytics!</p>
           </div>
         }
 
@@ -240,6 +240,7 @@ interface MemberResponseItem {
     .error-container {
       background-color: #FEF2F2;
       border: 1px solid #FCA5A5;
+      border-left: 4px solid #DC2626;
       border-radius: 16px;
       padding: 40px 24px;
       text-align: center;

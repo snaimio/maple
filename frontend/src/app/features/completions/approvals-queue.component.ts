@@ -106,7 +106,11 @@ import { Assignment } from '../../core/models';
                     [disabled]="actionLoading()"
                     (click)="onApprove(item)"
                   >
-                    Approve
+                    @if (actionLoading() && approvingId() === item.id) {
+                      <span>Approving...</span>
+                    } @else {
+                      <span>Approve</span>
+                    }
                   </button>
                   <button
                     type="button"
@@ -721,6 +725,7 @@ export class ApprovalsQueueComponent implements OnInit {
   readonly rejectNote = signal('');
   readonly rejectModalError = signal<string | null>(null);
   readonly actionLoading = signal(false);
+  readonly approvingId = signal<number | null>(null);
   readonly successMessage = signal<string | null>(null);
 
   private toastTimeout: any = null;
@@ -762,14 +767,17 @@ export class ApprovalsQueueComponent implements OnInit {
     }
 
     this.actionLoading.set(true);
+    this.approvingId.set(item.id);
     this.completionService.approve(completionId).subscribe({
       next: () => {
         this.pendingApprovals.update((list) => list.filter((a) => a.id !== item.id));
         this.actionLoading.set(false);
+        this.approvingId.set(null);
         this.showToast('Chore approved — points awarded!');
       },
       error: (err) => {
         this.actionLoading.set(false);
+        this.approvingId.set(null);
         this.error.set(err?.error?.error || 'Failed to approve chore.');
       },
     });
