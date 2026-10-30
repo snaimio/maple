@@ -92,11 +92,25 @@ class AssignmentController
                     c.points AS chore_points,
                     c.household_id,
                     assignee.display_name AS assigned_to_name,
-                    assigner.display_name AS assigned_by_name
+                    assignee.avatar_url   AS child_avatar_url,
+                    assigner.display_name AS assigned_by_name,
+                    cc.completion_id,
+                    cc.submission_note,
+                    cc.submitted_at
                 FROM chore_assignments a
                 JOIN chores c ON c.id = a.chore_id
                 JOIN users assignee ON assignee.id = a.assigned_to
                 JOIN users assigner ON assigner.id = a.assigned_by
+                LEFT JOIN (
+                    SELECT cc1.id AS completion_id, cc1.assignment_id, cc1.note AS submission_note, cc1.submitted_at
+                    FROM chore_completions cc1
+                    INNER JOIN (
+                        SELECT assignment_id, MAX(id) AS max_id
+                        FROM chore_completions
+                        WHERE status = 'pending'
+                        GROUP BY assignment_id
+                    ) cc2 ON cc1.id = cc2.max_id
+                ) cc ON cc.assignment_id = a.id
                 WHERE c.household_id IN (
                     SELECT household_id FROM household_members WHERE user_id = ?
                 )";
@@ -127,13 +141,19 @@ class AssignmentController
             'chore_title'       => $r['chore_title'],
             'chore_description' => $r['chore_description'],
             'chore_points'      => (int) $r['chore_points'],
+            'points'            => (int) $r['chore_points'],
             'household_id'      => (int) $r['household_id'],
             'assigned_to'       => (int) $r['assigned_to'],
             'assigned_to_name'  => $r['assigned_to_name'],
+            'child_name'        => $r['assigned_to_name'],
+            'child_avatar_url'  => $r['child_avatar_url'] ?? null,
             'assigned_by'       => (int) $r['assigned_by'],
             'assigned_by_name'  => $r['assigned_by_name'],
             'due_date'          => $r['due_date'],
             'status'            => $r['status'],
+            'completion_id'     => isset($r['completion_id']) && $r['completion_id'] !== null ? (int) $r['completion_id'] : null,
+            'submission_note'   => $r['submission_note'] ?? null,
+            'submitted_at'      => $r['submitted_at'] ?? null,
             'created_at'        => $r['created_at'],
             'updated_at'        => $r['updated_at'],
         ], $stmt->fetchAll());

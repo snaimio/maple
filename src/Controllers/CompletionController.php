@@ -119,7 +119,7 @@ class CompletionController
         $assignment = $this->findAssignmentOrFail((int) $completion['assignment_id']);
         $this->assertParent((int) $assignment['household_id'], $userId);
 
-        $rejectionNote = trim((string) Request::input('rejection_note', ''));
+        $rejectionNote = trim((string) (Request::input('note') ?? Request::input('rejection_note') ?? ''));
         $pdo = Database::conn();
 
         try {
