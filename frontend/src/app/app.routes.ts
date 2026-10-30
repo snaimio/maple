@@ -4,6 +4,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { ParentDashboardComponent } from './features/dashboard/parent-dashboard.component';
 import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-dashboard.component';
 import { ChoreBoardComponent } from './features/chores/chore-board.component';
+import { ApprovalsQueueComponent } from './features/completions/approvals-queue.component';
 import { CreateComponent } from './features/household/create/create.component';
 import { JoinComponent } from './features/household/join/join.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -44,7 +45,7 @@ export const routes: Routes = [
   },
   {
     path: 'approvals',
-    component: PlaceholderDashboardComponent,
+    component: ApprovalsQueueComponent,
     canActivate: [authGuard],
   },
   {

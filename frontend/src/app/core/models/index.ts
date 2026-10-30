@@ -74,6 +74,12 @@ export interface Assignment {
   assigned_by_name: string;
   due_date: string;
   status: 'pending' | 'in_progress' | 'submitted' | 'approved' | 'rejected' | 'overdue';
+  completion_id?: number | null;
+  submission_note?: string | null;
+  submitted_at?: string | null;
+  child_name?: string;
+  child_avatar_url?: string | null;
+  points?: number;
   created_at: string;
   updated_at: string;
 }
