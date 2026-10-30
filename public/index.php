@@ -11,20 +11,28 @@ error_reporting(E_ALL);
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
+$isProduction = ($_ENV['APP_ENV'] ?? 'local') === 'production';
+
 session_set_cookie_params([
     'lifetime' => 0,
     'path'     => '/',
     'domain'   => '',
-    'secure'   => false,
+    'secure'   => $isProduction,
     'httponly' => true,
-    'samesite' => 'Lax',
+    'samesite' => $isProduction ? 'None' : 'Lax',
 ]);
 
-$allowedOrigin = ($_ENV['APP_ENV'] ?? 'local') === 'local'
-    ? 'http://localhost:4200'
-    : 'https://your-production-domain.com';
-
-header("Access-Control-Allow-Origin: {$allowedOrigin}");
+$allowedOrigins = [
+    'http://localhost:4200',
+    'https://maple-family.byethost3.com',
+    // TODO: Add your Vercel URL here after deploying frontend
+];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+} else {
+    header('Access-Control-Allow-Origin: http://localhost:4200');
+}
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
