@@ -80,6 +80,7 @@ export interface Assignment {
   child_name?: string;
   child_avatar_url?: string | null;
   points?: number;
+  rejection_note?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -109,6 +110,7 @@ export interface Reward {
   title: string;
   description: string | null;
   cost_points: number;
+  cost?: number;
   is_active: boolean;
   created_by: number;
   created_by_name?: string | null;

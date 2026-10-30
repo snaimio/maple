@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { ParentDashboardComponent } from './features/dashboard/parent-dashboard.component';
+import { ChildDashboardComponent } from './features/dashboard/child-dashboard.component';
 import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-dashboard.component';
 import { ChoreBoardComponent } from './features/chores/chore-board.component';
 import { ApprovalsQueueComponent } from './features/completions/approvals-queue.component';
@@ -36,6 +37,11 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: ParentDashboardComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'child-dashboard',
+    component: ChildDashboardComponent,
     canActivate: [authGuard],
   },
   {

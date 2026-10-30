@@ -48,4 +48,26 @@ export class AssignmentService {
         )
       );
   }
+
+  /**
+   * Retrieves assignments assigned to a specific user within a household.
+   *
+   * @param userId The user (child) ID
+   * @param householdId The household ID
+   * @returns Observable emitting an array of Assignment records
+   */
+  listByUser(userId: number, householdId: number): Observable<Assignment[]> {
+    return this.api
+      .get<AssignmentsResponse>('/assignments', {
+        user_id: userId,
+        household_id: householdId,
+      })
+      .pipe(
+        map((res) =>
+          (res.assignments || []).filter(
+            (a) => a.household_id === householdId && a.assigned_to === userId
+          )
+        )
+      );
+  }
 }

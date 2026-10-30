@@ -20,6 +20,19 @@ export class CompletionService {
   private readonly api = inject(ApiService);
 
   /**
+   * Submits a completion report for a child assignment with an optional progress note.
+   *
+   * @param assignmentId The assignment ID in chore_assignments
+   * @param note Optional note describing completion
+   * @returns Observable emitting the submission response
+   */
+  submit(assignmentId: number, note?: string): Observable<any> {
+    return this.api.post<any>(`/assignments/${assignmentId}/complete`, {
+      note: note ? note.trim() : null,
+    });
+  }
+
+  /**
    * Approves a pending chore completion and awards points to the assignee.
    *
    * @param completionId The completion ID in chore_completions
