@@ -7,6 +7,7 @@ import { PlaceholderDashboardComponent } from './features/dashboard/placeholder-
 import { ChoreBoardComponent } from './features/chores/chore-board.component';
 import { ApprovalsQueueComponent } from './features/completions/approvals-queue.component';
 import { RewardsComponent } from './features/rewards/rewards.component';
+import { LeaderboardComponent } from './features/leaderboard/leaderboard.component';
 import { CreateComponent } from './features/household/create/create.component';
 import { JoinComponent } from './features/household/join/join.component';
 import { authGuard } from './core/guards/auth.guard';
@@ -62,7 +63,7 @@ export const routes: Routes = [
   },
   {
     path: 'leaderboard',
-    component: PlaceholderDashboardComponent,
+    component: LeaderboardComponent,
     canActivate: [authGuard],
   },
   {

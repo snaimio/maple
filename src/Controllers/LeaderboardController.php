@@ -40,8 +40,7 @@ class LeaderboardController
                  SELECT user_id, SUM(delta) AS delta
                  FROM points_transactions
                  WHERE household_id = ?
-                   AND created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-                   AND delta > 0
+                   AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
                  GROUP BY user_id
              ) weekly ON weekly.user_id = hm.user_id
              WHERE hm.household_id = ?

@@ -1,4 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
@@ -22,7 +23,7 @@ interface DailyPointStat {
 @Component({
   selector: 'app-parent-dashboard',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   template: `
     <div class="dashboard-page">
       <!-- Header -->
@@ -180,7 +181,7 @@ interface DailyPointStat {
               <section class="dashboard-card">
                 <header class="card-title-row">
                   <h2 class="card-title">Leaderboard</h2>
-                  <a routerLink="/leaderboard" class="card-action-link">View all</a>
+                  <a routerLink="/leaderboard" class="view-all">View all</a>
                 </header>
 
                 <div class="leaderboard-list">
@@ -417,6 +418,18 @@ interface DailyPointStat {
     }
 
     .card-action-link:hover {
+      text-decoration: underline;
+    }
+
+    .view-all {
+      display: inline-block;
+      color: #0F766E;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .view-all:hover {
       text-decoration: underline;
     }
 
