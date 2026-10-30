@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 
 /**
@@ -79,8 +80,34 @@ export class App implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Do not run session check on the login page
-    if (this.router.url === '/login' || window.location.pathname === '/login' || window.location.pathname.startsWith('/login')) {
+    const url = this.router.url;
+    const path = typeof window !== 'undefined' ? window.location.pathname : '';
+    const isAuthRoute =
+      url === '/login' ||
+      url === '/register' ||
+      path === '/login' ||
+      path === '/register' ||
+      path.startsWith('/login') ||
+      path.startsWith('/register');
+
+    // If authenticated user is on login/register, redirect to dashboard
+    if (this.currentUser() && isAuthRoute) {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
+
+    // Listen for client-side navigation to login/register while authenticated
+    this.router.events
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        const targetUrl = event.urlAfterRedirects || event.url;
+        if (this.currentUser() && (targetUrl === '/login' || targetUrl === '/register')) {
+          this.router.navigate(['/dashboard']);
+        }
+      });
+
+    // Do not run session check on the login/register page
+    if (isAuthRoute) {
       return;
     }
 
