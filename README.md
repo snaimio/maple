@@ -35,7 +35,7 @@ Maple addresses this challenge by providing a centralized, role-based web applic
 
 Experience a comprehensive product demonstration featuring real-time authentication, dual-role workflows (Parent vs. Child), the Kanban chore board, atomic point ledger transactions, interactive leaderboard sparklines, and dynamic data analytics.
 
-https://github.com/user-attachments/assets/b8206607-6b18-4c89-85ec-ac7ffbe7b829
+> 🎬 **Walkthrough Video**: See [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) for the shot-by-shot walkthrough script, voiceover narration, and feature demonstrations.
 
 <details>
 <summary><strong>Click to expand feature breakdown & video highlights</strong></summary>
