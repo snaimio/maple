@@ -22,7 +22,24 @@
 
 Watch the full walkthrough demonstration featuring user registration, dual-role workflows, the Kanban chore board, real-time points ledger transactions, dynamic family leaderboard, and Chart.js analytics.
 
-https://github.com/user-attachments/assets/maple-walkthrough-demo
+https://github.com/user-attachments/assets/45a0e90d-249a-4040-833f-13c4386ed4fd
+
+<details>
+<summary><strong>Click to preview animated walkthrough GIF</strong></summary>
+<br />
+<div align="center">
+  <img src="demo/maple_demo_preview.gif" alt="Maple Walkthrough Demo Animated Preview" width="100%" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.25);" />
+</div>
+</details>
+
+> 🎬 **Walkthrough Chapters**:
+> 1. **Role-Based Authentication & Session Security**: Strict role separation with Angular 17 Signals state hydration and Bcrypt cryptographic hashing.
+> 2. **Parent Command Center & Household Metrics**: Executive KPIs for completed chores, active streaks, points in circulation, and Chart.js momentum charts.
+> 3. **Interactive 4-Stage Kanban Chore Board**: Visual task progression across Not Started, In Progress, Submitted, and Approved columns with point valuations.
+> 4. **Gamified Rewards Catalog & Anti-Double Spend**: Parent-curated incentives backed by mathematical ledger verification to prevent overdrafts.
+> 5. **Dynamic Family Leaderboard & Gamified Podium**: Olympic gold/silver/bronze podium rankings, consistency streaks, and velocity sparklines.
+> 6. **Chart.js Visual Intelligence & Performance Analytics**: 7-day completion output, points equity distributions, and top chore volume matrix.
+> 7. **Mobile Responsive Layout & Append-Only Financial Ledger**: Adaptive 375px mobile experience with immutable double-entry points accounting.
 
 ---
 
@@ -208,6 +225,10 @@ Open **http://localhost:4200** in your browser to access the login page.
 
 ```
 maple/
+├── demo/                            # Walkthrough demo video & media assets
+│   ├── Maple_Demo.mp4               # Full HD walkthrough demo video (Voice Narration & Audio)
+│   ├── maple_demo_preview.gif       # 16-second animated looping preview GIF
+│   └── thumbnail.png                # High-resolution video presentation thumbnail
 ├── frontend/                        # Angular 17 Single-Page Application
 │   └── src/app/
 │       ├── core/                    # Guards, interceptors, models, services
