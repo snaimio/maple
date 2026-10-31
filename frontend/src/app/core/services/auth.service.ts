@@ -1,7 +1,9 @@
 import { inject, Injectable, signal, computed, Signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap, catchError, throwError, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { User, Household } from '../models';
+import { environment } from '../../../environments/environment';
 
 export interface AuthResponse {
   user: User;
@@ -18,6 +20,8 @@ export interface AuthResponse {
 })
 export class AuthService {
   private readonly api = inject(ApiService);
+  private readonly http = inject(HttpClient);
+
   private loadInitialUser(): User | null {
     try {
       const stored = localStorage.getItem('maple_user');
@@ -208,16 +212,17 @@ export class AuthService {
 
   /**
    * Authenticates an existing user and stores their profile in the currentUser signal.
+   * Uses `text/plain` to avoid CORS preflight issues with the production server.
    *
    * @param email User email address
    * @param password Account password
    * @returns Observable emitting the authenticated User object in an AuthResponse wrapper
    */
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.api.post<AuthResponse>('/auth/login', {
-      email,
-      password,
-    }).pipe(
+    const headers = new HttpHeaders({ 'Content-Type': 'text/plain' });
+    const body = JSON.stringify({ email, password });
+
+    return this.http.post<AuthResponse>(`${environment.apiBaseUrl}/auth/login`, body, { headers }).pipe(
       tap((response) => {
         if (response.user) {
           try {
