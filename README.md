@@ -1,15 +1,14 @@
 <div align="center">
-  <h1>🍁 Maple — Family Chore & Reward Management System</h1>
+  <h1>🍁 Maple — Family Chore & Reward Manager</h1>
   <p><b>Enterprise-Grade Full-Stack Household Productivity Platform & Gamified Reward Engine</b></p>
 
   <p>
-    <img src="https://img.shields.io/badge/Angular-17%2B-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular 17+">
-    <img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript Strict">
-    <img src="https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.4">
-    <img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL 8.0">
-    <img src="https://img.shields.io/badge/Charts-Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Chart.js">
-    <img src="https://img.shields.io/badge/Architecture-Clean%20REST-0F766E?style=for-the-badge" alt="Clean REST">
-    <img src="https://img.shields.io/badge/License-MIT-34C759?style=for-the-badge" alt="MIT License">
+    <a href="https://angular.io"><img src="https://img.shields.io/badge/Angular-17-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular 17"></a>
+    <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript Strict"></a>
+    <a href="https://www.php.net"><img src="https://img.shields.io/badge/PHP-8.4-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP 8.4"></a>
+    <a href="https://www.mysql.com"><img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL 8.0"></a>
+    <a href="https://www.chartjs.org"><img src="https://img.shields.io/badge/Charts-Chart.js-FF6384?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Chart.js"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-34C759?style=for-the-badge" alt="MIT License"></a>
   </p>
 
   <p>
@@ -19,334 +18,275 @@
 
 ---
 
-## 📌 Executive Overview
-
-**Maple** is a production-grade full-stack family coordination platform and chore gamification system. Traditional household management frequently relies on scattered text messages, paper chore charts, and verbal promises—leading to dropped chores, unverified claims, uneven workload distribution, and friction between parents and children.
-
-Maple addresses this challenge by providing a centralized, role-based web application with:
-- **Parent Command Center**: Oversee household productivity, create and assign chores, review proof of completion, manage the reward catalog, and analyze engagement trends.
-- **Child Experience**: Track personalized daily chores, submit completion notes, monitor points progression in real time, and redeem points for family rewards.
-- **Double-Entry Financial-Grade Ledger**: All point allocations and redemptions are recorded as immutable transactions (`SUM(delta)`), preventing desynchronization, race conditions, or balance tampering.
-- **Reactive Design System**: Built with modern Angular 17 Signals, standalone components, dynamic Chart.js data visualization, and an adaptive layout optimized across mobile (375px), tablet (768px), and desktop (1440px).
-
----
-
 ## 🎥 Video Walkthrough Demo
 
-Experience a comprehensive product demonstration featuring real-time authentication, dual-role workflows (Parent vs. Child), the Kanban chore board, atomic point ledger transactions, interactive leaderboard sparklines, and dynamic data analytics.
+Watch the full walkthrough demonstration featuring user registration, dual-role workflows, the Kanban chore board, real-time points ledger transactions, dynamic family leaderboard, and Chart.js analytics.
 
-> 🎬 **Walkthrough Video**: See [`docs/DEMO_SCRIPT.md`](docs/DEMO_SCRIPT.md) for the shot-by-shot walkthrough script, voiceover narration, and feature demonstrations.
-
-<details>
-<summary><strong>Click to expand feature breakdown & video highlights</strong></summary>
-<br />
-
-- **00:00 - 00:45**: Split-screen authentication & secure session handshake.
-- **00:45 - 01:30**: Parent Dashboard KPIs, pending approval queues, and weekly volume charts.
-- **01:30 - 02:15**: Interactive Kanban Chore Board with status transitions and child assignment.
-- **02:15 - 03:00**: Child experience—submitting chore completion notes & reviewing real-time points.
-- **03:00 - 03:45**: Two-sided verification—parent approval workflow & atomic points transaction ledger.
-- **03:45 - 04:30**: Rewards store redemption with balance validation, podium leaderboard, and Chart.js analytics.
-</details>
+https://github.com/user-attachments/assets/maple-walkthrough-demo
 
 ---
 
-## 📱 Visual Showcase
+## 📱 App Screenshots
 
-| Parent Dashboard & KPIs | Kanban Chore Board | Approvals Queue |
+| Login & Authentication | Parent Executive Dashboard | Kanban Chore Board |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/02-parent-dashboard.png" width="300" alt="Parent Dashboard" /> | <img src="docs/screenshots/03-chore-board.png" width="300" alt="Chore Board" /> | <img src="docs/screenshots/04-approvals.png" width="300" alt="Approvals Queue" /> |
+| <img src="docs/screenshots/01-login.png" width="240" alt="Login Screen" /> | <img src="docs/screenshots/02-parent-dashboard.png" width="240" alt="Parent Dashboard" /> | <img src="docs/screenshots/03-chore-board.png" width="240" alt="Chore Board" /> |
 
-| Rewards Store & Redemptions | Child Personal Dashboard | Dynamic Family Leaderboard |
+| Rewards Catalog Manager | Family Leaderboard | Analytics & Insights |
 |:---:|:---:|:---:|
-| <img src="docs/screenshots/06-rewards-store.png" width="300" alt="Rewards Store" /> | <img src="docs/screenshots/07-child-dashboard.png" width="300" alt="Child Dashboard" /> | <img src="docs/screenshots/08-leaderboard.png" width="300" alt="Leaderboard" /> |
+| <img src="docs/screenshots/05-rewards-manager.png" width="240" alt="Rewards Manager" /> | <img src="docs/screenshots/08-leaderboard.png" width="240" alt="Leaderboard" /> | <img src="docs/screenshots/09-analytics.png" width="240" alt="Analytics" /> |
 
-| Chart.js Visual Analytics | Split-Screen Auth & Onboarding | Mobile Responsive Layout (375px) |
-|:---:|:---:|:---:|
-| <img src="docs/screenshots/09-analytics.png" width="300" alt="Analytics" /> | <img src="docs/screenshots/01-login.png" width="300" alt="Login Screen" /> | <img src="docs/screenshots/10-mobile.png" width="300" alt="Mobile View" /> |
+<div align="center">
+
+### Mobile Responsive Layout (375px)
+
+<img src="docs/screenshots/10-mobile.png" width="240" alt="Mobile Responsive Layout" />
+
+</div>
 
 ---
 
-## ✨ Key Capabilities
+## 📖 Overview
 
-### 1. Multi-Tenant Households & Role-Based Access Control
-- **Dual Household Roles**: Granular permission gating separating `parent` (administrative authority, chore/reward CRUD, approvals) from `child` (completion submission, catalog redemption, leaderboard participation).
-- **Secure Session Authentication**: PHP session-backed cookies with `SameSite`, `HttpOnly`, and secure attributes, coupled with password hashing (`PASSWORD_DEFAULT` Bcrypt).
-- **Multi-Household Architecture**: Support for household creation and member invitation codes, allowing users to belong to different family units with isolated scopes.
+**Maple** is a family task management app built for households where parents and children collaborate on chores. Parents create chores with point values, children complete them, and parents approve submissions to award points. Points can be redeemed for rewards — all tracked in a real-time leaderboard with analytics.
 
-### 2. Kanban Chore Board & Lifecycle Workflow
-- **4-Stage State Machine**: Chores progress cleanly through `Not Started` ➔ `In Progress` ➔ `Submitted` ➔ `Approved`.
-- **Flexible Assignment Engine**: Assign tasks to specific children, define point values, set strict due dates, and categorize by room or responsibility area.
-- **Parent Oversight & Reassignment**: Reassign active tasks or adjust due dates on the fly with live status synchronizations.
+Built from scratch as a full-stack application with **Angular 17** (frontend) and **PHP 8.4** (backend) — no bloated third-party frameworks, no heavy scaffolds. Every line of the router, ORM layer, and authentication system is custom-crafted for reliability and speed.
 
-### 3. Two-Sided Verification & Auditable Approval Queue
-- **Accountability Submissions**: Children submit completion requests with accompanying notes detailing their work.
-- **Parent Review Gate**: Parents can approve with a single click (triggering atomic points awards) or reject with explicit feedback notes so the child can address deficiencies.
-- **State Guarding**: Strict backend validation ensures approvals only operate on records in `pending` status, eliminating replay attacks or double-credit bugs.
+### Why Maple?
 
-### 4. Immutable Append-Only Points Ledger
-- **Financial-Grade Ledger Pattern**: Balances are never updated in place. Instead, all rewards, deductions, and adjustments are recorded as discrete entries in `points_transactions`.
-- **Computed Real-Time Balances**: User point balances are calculated dynamically using `SUM(delta)`, providing a tamper-proof audit trail of every point earned and spent.
-- **Balance Protection**: Re-validates child point balances within a transaction before finalizing reward redemptions to prevent negative balances.
-
-### 5. Gamified Reward Store & Milestone Redemption
-- **Custom Reward Catalog**: Parents configure real-world rewards (e.g., screen time, outings, toys, privilege tokens) with point thresholds.
-- **Child Storefront**: Children browse available rewards with dynamic visual affordability badges and balance indicators.
-- **Redemption Workflow**: Redemptions trigger pending requests that parents approve, immediately deducting points and logging the event in the ledger.
-
-### 6. Dynamic Family Leaderboard & Activity Metrics
-- **Interactive Podium**: Highlight top contributors with Gold, Silver, and Bronze badges.
-- **Performance Sparklines**: Inline activity trends visualising 7-day contribution momentum.
-- **Contextual Identity**: Clear "YOU" indicator distinguishing the logged-in family member.
-
-### 7. Rich Analytics & Visual Intelligence
-- **Weekly Activity Chart**: Bar chart tracking household chore completions by day.
-- **Chore Distribution**: Horizontal bar chart identifying most frequently completed chores.
-- **Points Breakdown**: Doughnut chart showcasing point contributions across all family members.
-
-### 8. Mobile-First Responsive Design System
-- **Curated Design Palette**: Deep Sage Teal (`#0F766E`), Warm Amber (`#F59E0B`), and Slate neutrals designed in Figma.
-- **Fluid Layouts**: Full viewport responsiveness tailored for 375px mobile phones, 768px tablets, and 1440px desktop workstations.
-- **Accessible State Handling**: Standardized loading skeletons, informative empty states, and toast feedback for seamless user experience.
+- **Role-Based Access Control** — Parents manage chores, approve submissions, and curate rewards; children complete assignments and redeem points.
+- **Append-Only Financial Ledger** — Every point change is recorded as an immutable `points_transactions` entry. Balances are calculated dynamically via `SUM(delta)`. No mutable balances, zero race conditions, full audit trail.
+- **Real-Time Reactive Feedback** — Angular Signals propagate state updates instantly across dashboards, kanban boards, and navigation headers.
+- **Household-Scoped Multi-Tenancy** — Clean data isolation scoped by household IDs with unique family invite codes.
 
 ---
 
-## 🏗️ System Architecture & Data Flow
+## ✨ Core Features
 
-```mermaid
-flowchart TD
-    subgraph Client ["🎨 Frontend Client (Angular 17 SPA)"]
-        UI_Auth[Auth & Onboarding]
-        UI_Dash[Parent / Child Dashboard]
-        UI_Board[Kanban Chore Board]
-        UI_Queue[Approvals Queue]
-        UI_Store[Rewards Store & Catalog]
-        UI_Board_L[Leaderboard & Analytics]
-        
-        State[Angular Signals & Reactive State]
-        Interceptors[Credentials & CORS Interceptor]
-        
-        UI_Auth & UI_Dash & UI_Board & UI_Queue & UI_Store & UI_Board_L --> State
-        State --> Interceptors
-    end
+### 🔐 Authentication & Household Multi-Tenancy
+- Secure session-based authentication using **PHP native sessions** and **Bcrypt** password hashing.
+- Register as parent, create a household, and share secure invite codes with family members.
+- Instant login redirect to role-tailored dashboards (`parent` vs. `child`).
 
-    subgraph Server ["⚡ Backend API (PHP 8.4 REST Gateway)"]
-        Router[Custom Router & Middleware]
-        AuthGuard[Session Auth & Role Verification]
-        
-        subgraph Controllers ["Controller Layer"]
-        	AC[AuthController]
-        	HC[HouseholdController]
-        	CC[ChoreController]
-        	APPC[CompletionController]
-        	RC[RewardController]
-        	LC[LeaderboardController]
-        	ANC[AnalyticsController]
-        end
-        
-        subgraph Services ["Domain Services"]
-        	PS[PointsService / Ledger Engine]
-        end
-        
-        Interceptors -->|JSON over HTTPS| Router
-        Router --> AuthGuard
-        AuthGuard --> Controllers
-        CC & APPC & RC --> PS
-    end
+### ✅ Chore Management & Kanban Board
+- **4-Stage Kanban State Machine**: `Not Started` ➔ `In Progress` ➔ `Submitted` ➔ `Approved`.
+- Create and edit chores with titles, point weights, categories, and due dates.
+- Assign chores to specific children with real-time status transitions.
 
-    subgraph Database ["🗄️ Persistence Layer (MySQL 8.0 InnoDB)"]
-        Users[(users)]
-        Households[(households & members)]
-        Chores[(chores & assignments)]
-        Completions[(chore_completions)]
-        Rewards[(rewards & redemptions)]
-        Ledger[(points_transactions - Append Only)]
-        
-        Controllers --> Database
-        PS --> Ledger
-    end
+### ⚖️ Two-Sided Verification & Approvals Workflow
+- Children submit completed chores along with completion notes.
+- Parents review submissions in a dedicated Approvals Queue.
+- Approving awards points immediately; rejecting returns feedback so the child can address deficiencies.
+
+### 🎁 Rewards System with Balance Protection
+- Parent-managed reward catalog (full CRUD).
+- Children browse available rewards with dynamic affordability indicators.
+- Strict double-spend protection validates point balances at both frontend and backend before approving redemptions.
+
+### 🏆 Family Leaderboard
+- Family podium highlighting top performers with medals (🥇🥈🥉).
+- Weekly velocity sparklines showing 7-day contribution momentum.
+- Contextual "YOU" indicator distinguishing the logged-in family member.
+
+### 📊 Analytics & Visual Intelligence
+- **Weekly Chore Activity**: Bar chart tracking household completions by day.
+- **Top Completed Chores**: Horizontal bar breakdown by task popularity.
+- **Points Breakdown**: Doughnut chart showcasing point contributions across all members.
+
+### 🎨 Design System
+- **Curated Palette**: Deep Teal (`#0F766E`), Warm Amber (`#F59E0B`), and Slate neutrals designed in Figma.
+- **Adaptive Breakpoints**: 375px (mobile), 768px (tablet), 1440px (desktop).
+- **Accessible State Handling**: Standardized loading skeletons, informative empty states, and toast notifications.
+
+---
+
+## 🏗️ Architecture & Data Flow
+
+```
+┌────────────────────────────────────────────────┐
+│           BROWSER (localhost:4200)             │
+│                                                │
+│  Angular 17 Single-Page Application (SPA)      │
+│  • Standalone Components                       │
+│  • Angular Signals for Reactive State          │
+│  • Route Guards & Credentials Interceptors     │
+│  • Chart.js for Data Visualizations            │
+└──────────────────────┬─────────────────────────┘
+                       │ HTTP + Cookies (SameSite=Lax, HttpOnly)
+                       ▼
+┌────────────────────────────────────────────────┐
+│           PHP REST API (localhost:8000)        │
+│                                                │
+│  Router → Controllers → Services → Models      │
+│  • AuthController (Sessions + Bcrypt)          │
+│  • HouseholdController (Multi-tenancy)         │
+│  • ChoreController & AssignmentController      │
+│  • CompletionController (Verification Gate)    │
+│  • RewardController & RedemptionController     │
+│  • LeaderboardController & AnalyticsController │
+│  • PointsService (Atomic Double-Entry Ledger)  │
+└──────────────────────┬─────────────────────────┘
+                       │ PDO Prepared Statements
+                       ▼
+┌────────────────────────────────────────────────┐
+│               MySQL 8.0 (InnoDB)               │
+│                                                │
+│  users · households · household_members        │
+│  chores · chore_assignments · chore_completions│
+│  rewards · reward_redemptions                  │
+│  points_transactions · notifications           │
+└────────────────────────────────────────────────┘
 ```
 
----
+### Key Design Decisions
 
-## 📊 Database Architecture & Ledger Integrity
-
-Maple is backed by **10 normalized relational tables** governed by foreign keys and constraints:
-
-| Table | Purpose |
-|---|---|
-| `users` | User credentials, display names, avatar URLs, and timestamps |
-| `households` | Family units, unique invite codes, and creation metadata |
-| `household_members` | Pivot table linking users to households with role constraints (`parent` or `child`) |
-| `chores` | Reusable chore definitions, point values, categories, and active flags |
-| `chore_assignments` | Instances of chores assigned to specific children with due dates and statuses |
-| `chore_completions` | Child submission records, completion notes, and parent review statuses |
-| `rewards` | Parent-curated reward catalog entries with required point costs |
-| `reward_redemptions` | Reward redemption requests and approval lifecycle states |
-| `points_transactions` | **Immutable append-only ledger** tracking all credits and debits (`SUM(delta)`) |
-| `notifications` | Transactional alerts and status updates for family members |
-
-Full entity-relationship documentation and DBML definitions are maintained in [`docs/erd.dbml`](docs/erd.dbml).
+- **Append-Only Ledger for Points:** Every point allocation or redemption is a discrete row in `points_transactions`. Balances are calculated dynamically using `SELECT SUM(delta) WHERE user_id = ?`. Eliminates balance desynchronization and maintains a full audit log.
+- **Session-Based Authentication:** Employs secure, HTTP-only session cookies with `SameSite=Lax` instead of vulnerable localStorage JWTs.
+- **Angular Signals:** Replaced traditional RxJS state boilerplate with fine-grained Angular 17 Signals for high performance and clean reactive code.
+- **Role-Based Authorization:** Permissions are verified at the database level per household membership (`parent` or `child`).
 
 ---
 
-## 🛠️ Technology Stack
+## 🚀 Quick Start & Local Setup
 
-| Layer | Technologies & Standards |
-|---|---|
-| **Frontend Framework** | **Angular 17** (Standalone Components, Signals, New Control Flow Syntax) |
-| **Language** | **TypeScript 5.x** (Strict Mode Enabled) |
-| **Data Visualization** | **Chart.js 4.x** + **ng2-charts** |
-| **Styling & Design** | Modern CSS3 Grid/Flexbox, Custom Design Tokens, Inter typography |
-| **Backend Engine** | **PHP 8.4** (Framework-free, Lightweight Custom REST Router, PSR-4 Autoloading) |
-| **Database** | **MySQL 8.0 / MariaDB** (InnoDB, Transactions, Foreign Keys) |
-| **Dependency Management** | Composer (PHP), NPM (Node.js 20+) |
-| **Hosting & Deployment** | **Vercel** (Frontend SPA CDN Distribution), Cloud PaaS / Container ready |
+### Prerequisites
+- **Node.js**: `20.x` or higher — [Download](https://nodejs.org)
+- **PHP**: `8.4+` (with `pdo_mysql` extension) — `brew install php` or [php.net](https://www.php.net)
+- **MySQL**: `8.0+` — XAMPP, Homebrew, or [MySQL installer](https://dev.mysql.com/downloads/)
+- **Composer**: `2.x` — [getcomposer.org](https://getcomposer.org)
+- **Angular CLI**: `npm install -g @angular/cli`
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/snaimio/maple.git
+cd maple
+```
+
+### 2. Backend Configuration
+
+```bash
+composer install
+cp .env.example .env
+# Edit .env with your local MySQL credentials
+```
+
+### 3. Database Initialization & Seeding
+
+```bash
+# Create database
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS maple CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+# Execute sequential migrations (001 through 010)
+for f in migrations/*.sql; do mysql -u root maple < "$f"; done
+
+# Seed realistic demo family data
+php seeders/demo_family.php
+```
+
+**Pre-Loaded Demo Accounts:**
+| Role | Email | Password | Context |
+|---|---|---|---|
+| **Parent** | `alex@maple.test` | `password123` | Full admin privileges, approval queue, analytics |
+| **Child** | `jamie@maple.test` | `password123` | Assigned chores, active points, reward redemption |
+
+### 4. Launch Development Servers
+
+```bash
+# Terminal 1 — Start PHP Backend
+php -S localhost:8000 -t public
+
+# Terminal 2 — Start Angular Frontend
+cd frontend && npm install && npm start
+```
+
+Open **http://localhost:4200** in your browser to access the login page.
 
 ---
 
-## 📂 Project Directory Structure
+## 📁 Project Structure
 
 ```
 maple/
-├── frontend/                        # Angular 17 Enterprise SPA
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── core/                # Core singletons: services, models, guards, interceptors
-│   │   │   │   ├── guards/          # Role & session authentication guards
-│   │   │   │   ├── interceptors/    # WithCredentials & API base URL interceptors
-│   │   │   │   ├── models/          # Type-safe TypeScript domain contracts
-│   │   │   │   └── services/        # Angular API integration services
-│   │   │   └── features/            # Feature modules
-│   │   │       ├── analytics/       # Chart.js visualization dashboards
-│   │   │       ├── auth/            # Split-screen login & registration
-│   │   │       ├── chores/          # Kanban board & chore management modal
-│   │   │       ├── completions/     # Parent verification & approvals queue
-│   │   │       ├── dashboard/       # Adaptive parent & child dashboard views
-│   │   │       ├── household/       # Household creation & invite code onboarding
-│   │   │       ├── leaderboard/     # Family podium, rankings & sparklines
-│   │   │       └── rewards/         # Reward store & parent catalog manager
-│   │   ├── environments/            # Local & production environment configurations
-│   │   ├── main.ts                  # Application bootstrap
-│   │   └── styles.css               # Global theme tokens, typography & animations
-│   ├── angular.json                 # Angular build & optimization configuration
-│   └── package.json                 # Node dependencies & build scripts
-│
-├── public/                          # Public Web Root
-│   ├── index.php                    # Front controller & request bootstrap
-│   └── .htaccess                    # URL rewrite rules & security headers
-│
-├── src/                             # Backend Core Architecture (PSR-4 Maple\)
-│   ├── Controllers/                 # REST API endpoints (Auth, Chores, Points, Rewards, etc.)
-│   ├── Core/                        # Framework kernel: Router, Request, Response, Database, Auth
-│   └── Services/                    # Domain business logic (Atomic PointsService)
-│
-├── migrations/                      # 10 sequential DDL migration scripts (001–010)
-├── seeders/                         # Seed data (demo_family.php with realistic state)
-├── docs/                            # Engineering documentation, API contracts & DBML ERD
-├── composer.json                    # PHP dependencies & PSR-4 namespace mapping
-├── vercel.json                      # Vercel deployment & SPA routing rewrites
+├── frontend/                        # Angular 17 Single-Page Application
+│   └── src/app/
+│       ├── core/                    # Guards, interceptors, models, services
+│       ├── features/                # Feature domains:
+│       │   ├── auth/                # Split-screen login & registration
+│       │   ├── household/           # Household creation & invite onboarding
+│       │   ├── dashboard/           # Adaptive parent & child dashboards
+│       │   ├── chores/              # 4-column Kanban board & chore modal
+│       │   ├── completions/         # Parent verification & approvals queue
+│       │   ├── rewards/             # Rewards store & catalog manager
+│       │   ├── leaderboard/         # Dynamic family podium & sparklines
+│       │   └── analytics/           # Chart.js data visualizations
+│       └── app.config.ts            # Application providers & routing setup
+├── public/                          # Public web root
+│   └── index.php                    # Front controller & request router
+├── src/                             # Backend core architecture (PSR-4 Maple\)
+│   ├── Controllers/                 # REST API endpoints
+│   ├── Core/                        # Framework engine: Router, Database, Auth, Request, Response
+│   └── Services/                    # Domain logic (Atomic PointsService ledger)
+├── migrations/                      # 10 sequential SQL migrations (001–010)
+├── seeders/                         # Seed data scripts (demo_family.php)
+├── docs/                            # Documentation, API contracts, ERD & screenshots
+│   ├── API_CONTRACT.md              # REST API response specification
+│   ├── erd.dbml                     # Database schema & entity relationships
+│   └── screenshots/                 # Real application interface screenshots
+├── composer.json                    # Composer dependencies & PSR-4 mapping
+├── LICENSE                          # MIT License
 └── README.md                        # Project documentation
 ```
 
 ---
 
-## 🚀 Quick Start & Local Development
+## 🛠️ Technology Stack
 
-### Prerequisites
-- **Node.js**: `20.x` or higher
-- **Angular CLI**: `npm install -g @angular/cli`
-- **PHP**: `8.2` or `8.4+` (with `pdo_mysql` extension)
-- **Composer**: `2.x`
-- **Database**: MySQL `8.0+` or MariaDB (XAMPP / Homebrew / Docker)
-
-### Installation & Setup
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/snaimio/maple.git
-   cd maple
-   ```
-
-2. **Configure Backend Dependencies & Environment**:
-   ```bash
-   composer install
-   cp .env.example .env
-   ```
-   *Edit `.env` to match your local database credentials:*
-   ```ini
-   DB_HOST=127.0.0.1
-   DB_PORT=3306
-   DB_NAME=maple
-   DB_USER=root
-   DB_PASS=
-   SESSION_SECRET=your_secure_random_key_here
-   ```
-
-3. **Initialize Database & Seed Data**:
-   ```bash
-   # Create database schema
-   mysql -u root -e "CREATE DATABASE IF NOT EXISTS maple CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-
-   # Run sequential migrations
-   for file in migrations/*.sql; do
-     mysql -u root maple < "$file"
-   done
-
-   # Seed realistic family demo dataset
-   php seeders/demo_family.php
-   ```
-
-4. **Launch Development Servers**:
-   ```bash
-   # Terminal 1 — Start PHP Backend API
-   php -S localhost:8000 -t public
-
-   # Terminal 2 — Start Angular Frontend
-   cd frontend
-   npm install
-   npm start
-   ```
-
-5. **Access the Application**:
-   Open **http://localhost:4200/login** in your browser.
-
-   **Pre-Configured Demo Accounts:**
-   | Role | Email | Password | Pre-Loaded Context |
-   |---|---|---|---|
-   | **Parent** | `alex@maple.test` | `password123` | Full admin privileges, approval queue, analytics |
-   | **Child** | `jamie@maple.test` | `password123` | Assigned chores, 120 points, reward store access |
-   | **Child** | `riley@maple.test` | `password123` | Assigned chores, 85 points |
-
----
-
-## 🏗️ Production Build & Deployment Architecture
-
-### Frontend Production Build
-The Angular client is optimized using Ahead-of-Time (AOT) compilation, tree-shaking, and minification:
-
-```bash
-cd frontend
-npm run build --configuration production
-```
-- **Output Artifacts**: `frontend/dist/maple-angular/browser/`
-- **Bundle Metrics**: ~720 kB raw (~170 kB gzipped initial transfer).
-
-### Deployment Architecture
-- **Frontend CDN (Vercel)**: The compiled Angular Single-Page Application is hosted on Vercel at [maple-ashy.vercel.app](https://maple-ashy.vercel.app) with global edge routing and SPA rewrites (`vercel.json`).
-- **Decoupled REST API Backend**: The PHP 8.4 REST API is architected for containerized deployment (e.g., Docker on Railway, Render, or AWS ECS/Fargate) connected to a managed MySQL instance (PlanetScale, Aiven, or AWS RDS).
-
----
-
-## 👨‍💻 Engineering Profile & Author
-
-* **Developer**: **Sheikh Naim**
-* **Portfolio**: [snaimio.github.io](https://snaimio.github.io)
-* **LinkedIn**: [linkedin.com/in/snaimio](https://www.linkedin.com/in/snaimio)
-* **GitHub**: [@snaimio](https://github.com/snaimio)
+| Layer | Technologies & Tools |
+|---|---|
+| **Frontend Framework** | **Angular 17** (Standalone Components, Signals, Control Flow Syntax) |
+| **Language** | **TypeScript 5.x** (Strict Type-Checking Enabled) |
+| **Data Visualization** | **Chart.js 4.x** + **ng2-charts** |
+| **Backend Engine** | **PHP 8.4** (Framework-free, Lightweight Custom REST Router, PSR-4 Autoloading) |
+| **Database** | **MySQL 8.0** (InnoDB Engine, Foreign Key Constraints, Transactions) |
+| **Authentication** | Session-based cookies (`HttpOnly`, `SameSite=Lax`), **Bcrypt** password hashing |
+| **Tooling & Build** | Angular CLI, NPM, Composer, Git |
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for complete details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for complete details:
+
+```text
+MIT License
+
+Copyright (c) 2026 Sheikh Naim
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 👤 Author
+
+**Sheikh Naim**  
+- **GitHub**: [@snaimio](https://github.com/snaimio)  
+- **Portfolio**: [snaimio.github.io](https://snaimio.github.io/)  
+- **LinkedIn**: [linkedin.com/in/snaimio](https://www.linkedin.com/in/snaimio)
