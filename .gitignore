@@ -14,3 +14,38 @@ dist/
 /frontend/dist/
 /frontend/.angular/
 /frontend/coverage/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+.angular/
+dist/
+
+# PHP
+vendor/
+!vendor/composer/
+logs/
+*.log
+error.log
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Test/Diagnostic files
+cors-test.php
+phpversion.php
+test.php
+
+# Temp files
+*.tmp
+*.bak
+*.orig
+
